@@ -1,0 +1,11 @@
+import { pathToFileURL } from 'node:url';
+import { getRootData } from '@sapphire/pieces';
+import { Constants } from 'discord.js';
+
+export const rootURL = pathToFileURL(`${getRootData().root}/`);
+
+export enum EmbedColor {
+	Primary = Constants.Colors.AQUA,
+	Secondary = Constants.Colors.BLUE,
+	Error = Constants.Colors.RED
+}
