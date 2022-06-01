@@ -1,9 +1,9 @@
 {
-	"name": "sapphire-template",
+	"name": "jampbot-v3",
 	"version": "0.0.1",
-	"description": "Template for my typescript Discord bot projects",
+	"description": "A feature-rich discord bot created for Team Jamp",
 	"main": "dist/index.js",
-	"repository": "https://github.com/Lioness100/sapphire-template",
+	"repository": "https://github.com/Lioness100/jampbot-v3",
 	"author": "Lioness100 <jchickmm2@gmail.com>",
 	"license": "Apache-2.0",
 	"type": "module",
