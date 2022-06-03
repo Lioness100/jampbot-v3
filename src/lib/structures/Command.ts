@@ -16,9 +16,6 @@ export abstract class Command extends SapphireCommand {
 			this.preconditions.append('OwnerOnly');
 		}
 	}
-
-	// This is already present Command, but is marked as optional.
-	public abstract override chatInputRun(interaction: ChatInputCommand.Interaction, context: ChatInputCommand.RunContext): unknown;
 }
 
 export namespace Command {
