@@ -7,16 +7,20 @@ import process from 'node:process';
 // Unless explicitly defined, set NODE_ENV to development.
 process.env.NODE_ENV ??= 'development';
 
+const optionalStringPredicate = str({ default: '' });
+
 export const env = cleanEnv(process.env, {
-	DISCORD_TOKEN: str({ desc: 'The discord bot token' }),
-	DEV_SERVER_ID: str({ default: '' }),
-	TWITTER_API_KEY: str({ default: '' }),
-	TWITTER_API_KEY_SECRET: str({ default: '' }),
-	TWITTER_ACCESS_TOKEN: str({ default: '' }),
-	TWITTER_ACCESS_TOKEN_SECRET: str({ default: '' }),
-	TWITTER_BEARER_TOKEN: str({ default: '' }),
-	TWITTER_NOTIFICATION_CHANNEL_ID: str({ default: '' }),
-	TWITTER_ACCOUNT_ID: str({ default: '' })
+	DISCORD_TOKEN: str(),
+	DEV_SERVER_ID: optionalStringPredicate,
+	TWITTER_API_KEY: optionalStringPredicate,
+	TWITTER_API_KEY_SECRET: optionalStringPredicate,
+	TWITTER_ACCESS_TOKEN: optionalStringPredicate,
+	TWITTER_ACCESS_TOKEN_SECRET: optionalStringPredicate,
+	TWITTER_BEARER_TOKEN: optionalStringPredicate,
+	TWITTER_NOTIFICATION_CHANNEL_ID: optionalStringPredicate,
+	TWITTER_ACCOUNT_ID: optionalStringPredicate,
+	WELCOME_CHANNEL_ID: optionalStringPredicate,
+	INFORMATION_CHANNEL_ID: optionalStringPredicate
 });
 
 const necessaryManagers: ReadonlySet<string> = new Set([
@@ -29,7 +33,7 @@ const necessaryManagers: ReadonlySet<string> = new Set([
 
 export const clientOptions: ClientOptions = {
 	// Intents dictate what events the client will receive.
-	intents: GatewayIntentBits.Guilds,
+	intents: GatewayIntentBits.Guilds | GatewayIntentBits.GuildMembers,
 	logger: { level: env.isProduction ? LogLevel.Info : LogLevel.Debug },
 	loadDefaultErrorListeners: false,
 	makeCache: (manager) => {

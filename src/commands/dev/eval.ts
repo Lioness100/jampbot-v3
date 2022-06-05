@@ -10,8 +10,7 @@ import { inspect } from 'node:util';
 import { Buffer } from 'node:buffer';
 import { Type } from '@sapphire/type';
 import { env } from '#root/config';
-import { setTimeout } from 'node:timers';
-import { resolveAPIStructure } from '#utils/interactions';
+import { setTimeout, clearTimeout } from 'node:timers';
 import { Time } from '@sapphire/time-utilities';
 
 export class EvalCommand extends Command {
@@ -82,8 +81,7 @@ export class EvalCommand extends Command {
 		const buttonRow = new MessageActionRow().setComponents(reviseButton);
 		await submission.editReply({ embeds: [embed], components: [buttonRow], files });
 
-		setTimeout(() => {
-			const message = resolveAPIStructure(submission.message!, Message);
+		const timeout = setTimeout(() => {
 			void message.edit({ components: [] }).catch(() => null);
 		}, Time.Minute * 5);
 
@@ -106,6 +104,7 @@ export class EvalCommand extends Command {
 			return;
 		}
 
+		clearTimeout(timeout);
 		await this.sendForm(buttonInteraction, { ...parameters, code });
 	}
 
@@ -185,7 +184,7 @@ export class EvalCommand extends Command {
 							.setDescription('The depth of the displayed return type')
 							.setRequired(false)
 					),
-			{ idHints: ['981662208041840640'], guildIds: [env.DEV_SERVER_ID] }
+			{ idHints: ['982845257249079306'], guildIds: [env.DEV_SERVER_ID] }
 		);
 	}
 }

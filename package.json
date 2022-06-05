@@ -27,11 +27,13 @@
 	},
 	"dependencies": {
 		"@discordjs/builders": "0.13.0",
+		"@napi-rs/canvas": "^0.1.22",
 		"@sapphire/decorators": "^4.3.4",
 		"@sapphire/discord.js-utilities": "^4.11.0",
 		"@sapphire/framework": "next",
 		"@sapphire/plugin-logger": "^2.2.1",
 		"@sapphire/stopwatch": "^1.4.1",
+		"@sapphire/time-utilities": "^1.7.4",
 		"@sapphire/type": "^2.2.4",
 		"@sapphire/utilities": "^3.6.2",
 		"@vitalets/google-translate-api": "^8.0.0",
@@ -42,6 +44,7 @@
 		"envalid": "^7.3.1",
 		"fuse.js": "^6.6.2",
 		"node-cleanup": "^2.1.2",
+		"ts-dedent": "^2.2.0",
 		"twitter-api-v2": "^1.12.2"
 	},
 	"optionalDependencies": {

@@ -29,13 +29,7 @@ export const sendError = async (
 	};
 
 	// eslint-disable-next-line @typescript-eslint/unbound-method
-	const replyFn = interaction.replied
-		? interaction.followUp
-		: interaction.deferred
-		? (data: typeof payload) => interaction.editReply(data).catch(() => interaction.reply(data))
-		: interaction.reply;
-
-	console.log(replyFn.toString());
+	const replyFn = interaction.replied ? interaction.followUp : interaction.deferred ? interaction.editReply : interaction.reply;
 	await replyFn.call(interaction, payload);
 };
 

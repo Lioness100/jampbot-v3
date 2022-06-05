@@ -10,7 +10,7 @@ export abstract class Command extends SapphireCommand {
 		if (this.category === 'dev') {
 			// Enable it only if there is a development server on the assumption it would've been registered guild wide
 			// otherwise.
-			this.enabled &&= Boolean(env.DEV_SERVER_ID);
+			this.enabled = Boolean(env.DEV_SERVER_ID);
 
 			// Automatically enable the OwnerOnly precondition.
 			this.preconditions.append('OwnerOnly');

@@ -1,11 +1,13 @@
 import '@sapphire/plugin-logger/register';
 import 'dotenv/config';
 
-import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, container } from '@sapphire/framework';
+import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, container, Store } from '@sapphire/framework';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { clientOptions } from '#root/config';
 import { TwitterNotifier } from '#services/TwitterNotifier';
 import cleanup from 'node-cleanup';
+
+Store.logger = console.log;
 
 cleanup(() => {
 	client.destroy();

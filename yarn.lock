@@ -131,6 +131,105 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@napi-rs/canvas-android-arm64@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-android-arm64@npm:0.1.22"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-darwin-arm64@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-darwin-arm64@npm:0.1.22"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-darwin-x64@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-darwin-x64@npm:0.1.22"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-linux-arm-gnueabihf@npm:0.1.22"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-linux-arm64-gnu@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-linux-arm64-gnu@npm:0.1.22"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-linux-arm64-musl@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-linux-arm64-musl@npm:0.1.22"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-linux-x64-gnu@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-linux-x64-gnu@npm:0.1.22"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-linux-x64-musl@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-linux-x64-musl@npm:0.1.22"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas-win32-x64-msvc@npm:0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas-win32-x64-msvc@npm:0.1.22"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@napi-rs/canvas@npm:^0.1.22":
+  version: 0.1.22
+  resolution: "@napi-rs/canvas@npm:0.1.22"
+  dependencies:
+    "@napi-rs/canvas-android-arm64": 0.1.22
+    "@napi-rs/canvas-darwin-arm64": 0.1.22
+    "@napi-rs/canvas-darwin-x64": 0.1.22
+    "@napi-rs/canvas-linux-arm-gnueabihf": 0.1.22
+    "@napi-rs/canvas-linux-arm64-gnu": 0.1.22
+    "@napi-rs/canvas-linux-arm64-musl": 0.1.22
+    "@napi-rs/canvas-linux-x64-gnu": 0.1.22
+    "@napi-rs/canvas-linux-x64-musl": 0.1.22
+    "@napi-rs/canvas-win32-x64-msvc": 0.1.22
+  dependenciesMeta:
+    "@napi-rs/canvas-android-arm64":
+      optional: true
+    "@napi-rs/canvas-darwin-arm64":
+      optional: true
+    "@napi-rs/canvas-darwin-x64":
+      optional: true
+    "@napi-rs/canvas-linux-arm-gnueabihf":
+      optional: true
+    "@napi-rs/canvas-linux-arm64-gnu":
+      optional: true
+    "@napi-rs/canvas-linux-arm64-musl":
+      optional: true
+    "@napi-rs/canvas-linux-x64-gnu":
+      optional: true
+    "@napi-rs/canvas-linux-x64-musl":
+      optional: true
+    "@napi-rs/canvas-win32-x64-msvc":
+      optional: true
+  checksum: b2fcb9d5395bab524158b72a0cbf42abb083e9963dc799092773057a8575c1200ad280bd5ba456317714e4758cec19a0ca0f21f506432f78416c1ab7fad9d036
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -3018,6 +3117,7 @@ __metadata:
   resolution: "jampbot-v3@workspace:."
   dependencies:
     "@discordjs/builders": 0.13.0
+    "@napi-rs/canvas": ^0.1.22
     "@sapphire/decorators": ^4.3.4
     "@sapphire/discord.js-utilities": ^4.11.0
     "@sapphire/eslint-config": ^4.3.5
@@ -3025,6 +3125,7 @@ __metadata:
     "@sapphire/plugin-logger": ^2.2.1
     "@sapphire/prettier-config": ^1.4.3
     "@sapphire/stopwatch": ^1.4.1
+    "@sapphire/time-utilities": ^1.7.4
     "@sapphire/ts-config": ^3.3.4
     "@sapphire/type": ^2.2.4
     "@sapphire/utilities": ^3.6.2
@@ -3047,6 +3148,7 @@ __metadata:
     node-cleanup: ^2.1.2
     pm2: ^5.2.0
     prettier: ^2.6.2
+    ts-dedent: ^2.2.0
     tsup: ^6.0.1
     twitter-api-v2: ^1.12.2
     typescript: ^4.7.2
@@ -4803,6 +4905,13 @@ __metadata:
   bin:
     tree-kill: cli.js
   checksum: 49117f5f410d19c84b0464d29afb9642c863bc5ba40fcb9a245d474c6d5cc64d1b177a6e6713129eb346b40aebb9d4631d967517f9fbe8251c35b21b13cd96c7
+  languageName: node
+  linkType: hard
+
+"ts-dedent@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "ts-dedent@npm:2.2.0"
+  checksum: 93ed8f7878b6d5ed3c08d99b740010eede6bccfe64bce61c5a4da06a2c17d6ddbb80a8c49c2d15251de7594a4f93ffa21dd10e7be75ef66a4dc9951b4a94e2af
   languageName: node
   linkType: hard
 
