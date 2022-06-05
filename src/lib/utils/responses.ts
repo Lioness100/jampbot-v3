@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import { type ButtonInteraction, MessageEmbed, type ColorResolvable, type CommandInteraction } from 'discord.js';
+import { MessageEmbed, type ColorResolvable, Interaction, InteractionResponseFields } from 'discord.js';
 import { EmbedColor } from '#utils/constants';
 import { italic } from '@discordjs/builders';
 
@@ -14,7 +14,8 @@ export const createEmbed = (description?: string, color: ColorResolvable = Embed
  * Sends an error response from an interaction.
  */
 export const sendError = async (
-	interaction: CommandInteraction | ButtonInteraction,
+	// "& InteractionResponseFields" will ensure the interaction is repliable to.
+	interaction: Interaction & InteractionResponseFields,
 	description: string,
 	options: { ephemeral?: boolean; tip?: string; prefix?: string } = {}
 ) => {
@@ -28,7 +29,13 @@ export const sendError = async (
 	};
 
 	// eslint-disable-next-line @typescript-eslint/unbound-method
-	const replyFn = interaction.replied ? interaction.followUp : interaction.deferred ? interaction.editReply : interaction.reply;
+	const replyFn = interaction.replied
+		? interaction.followUp
+		: interaction.deferred
+		? (data: typeof payload) => interaction.editReply(data).catch(() => interaction.reply(data))
+		: interaction.reply;
+
+	console.log(replyFn.toString());
 	await replyFn.call(interaction, payload);
 };
 

@@ -9,7 +9,8 @@
 			"#root/*": ["*"],
 			"#types/*": ["lib/types/*"],
 			"#utils/*": ["lib/utils/*"],
-			"#structures/*": ["lib/structures/*"]
+			"#structures/*": ["lib/structures/*"],
+			"#services/*": ["lib/services/*"]
 		}
 	},
 	"include": ["."]

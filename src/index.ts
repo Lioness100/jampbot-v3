@@ -4,7 +4,14 @@ import 'dotenv/config';
 import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, container } from '@sapphire/framework';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { clientOptions } from '#root/config';
-import process from 'node:process';
+import { TwitterNotifier } from '#services/TwitterNotifier';
+import cleanup from 'node-cleanup';
+
+cleanup(() => {
+	client.destroy();
+	container.twitter?.stream.destroy();
+	console.log('DOne!');
+});
 
 const client = new SapphireClient(clientOptions);
 
@@ -16,12 +23,9 @@ PaginatedMessage.wrongUserInteractionReply = (user) => `❌ Only ${user} can use
 // Utility - saves a lot of characters. A lot.
 Object.defineProperty(Piece.prototype, 'client', { get: () => container.client });
 
-try {
-	await client.login();
-} catch (error) {
-	client.logger.fatal(error);
-	client.destroy();
+await client.login();
 
-	// eslint-disable-next-line unicorn/no-process-exit
-	process.exit(1);
+if (TwitterNotifier.canRun()) {
+	container.twitter = new TwitterNotifier();
+	await container.twitter.init();
 }

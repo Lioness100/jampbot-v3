@@ -1,7 +1,7 @@
 import { type Message, Constants, MessageActionRow, MessageButton, Modal, TextInputComponent, type ButtonInteraction } from 'discord.js';
 import { EmbedLimits } from '@sapphire/discord.js-utilities';
 import { createEmbed, sendError } from '#utils/responses';
-import { EmbedColor } from '#utils/constants';
+import { CustomId, EmbedColor } from '#utils/constants';
 import { isThenable } from '@sapphire/utilities';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { codeBlock } from '@discordjs/builders';
@@ -32,7 +32,7 @@ export class EvalCommand extends Command {
 		}
 	) {
 		const codeInput = new TextInputComponent() //
-			.setCustomId('code-input')
+			.setCustomId(CustomId.CodeInput)
 			.setLabel(`${parameters.async ? 'Async' : ''}Code`)
 			.setRequired(true)
 			.setStyle('PARAGRAPH');
@@ -42,7 +42,7 @@ export class EvalCommand extends Command {
 		}
 
 		const row = new MessageActionRow<TextInputComponent>().setComponents(codeInput);
-		const modal = new Modal().setTitle('Code Editor').setCustomId('code-form').setComponents(row);
+		const modal = new Modal().setTitle('Code Editor').setCustomId(CustomId.CodeForm).setComponents(row);
 
 		await interaction.showModal(modal);
 		const submission = await interaction.awaitModalSubmit({ time: 0 }).catch(() => null);
@@ -52,7 +52,7 @@ export class EvalCommand extends Command {
 		}
 
 		const message = (await submission.deferReply({ ephemeral: parameters.ephemeral ?? false, fetchReply: true })) as Message;
-		const code = submission.fields.getTextInputValue('code-input');
+		const code = submission.fields.getTextInputValue(CustomId.CodeInput);
 
 		const { result, success, type, elapsed } = await this.eval(interaction, code, parameters);
 		const output = success ? codeBlock('js', result) : codeBlock('bash', result);

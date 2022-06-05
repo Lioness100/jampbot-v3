@@ -9,3 +9,17 @@ export enum EmbedColor {
 	Secondary = Constants.Colors.BLUE,
 	Error = Constants.Colors.RED
 }
+
+export enum CustomId {
+	CodeInput = 'code-input',
+	CodeForm = 'code-form',
+	ReplyInput = 'reply-input',
+	ReplyForm = 'reply-form',
+	Like = 'like-button',
+	Dislike = 'dislike-button',
+	Retweet = 'retweet-button',
+	UnRetweet = 'unretweet-button',
+	Reply = 'reply-button',
+	Block = 'block-button',
+	Unblock = 'unblock-button'
+}

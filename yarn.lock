@@ -490,6 +490,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-cleanup@npm:^2":
+  version: 2.1.2
+  resolution: "@types/node-cleanup@npm:2.1.2"
+  checksum: fe4bef5e5ca973b99cddc76a28a81750fd97275189bd2ddfd721ba3341a157870e314dfd013562f0e48f6ae600c08ad78e23eaf0f4aeed8501d1b9c20a74e2d4
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:^2.6.1":
   version: 2.6.1
   resolution: "@types/node-fetch@npm:2.6.1"
@@ -2834,6 +2841,7 @@ __metadata:
     "@sapphire/type": ^2.2.4
     "@sapphire/utilities": ^3.6.2
     "@types/node": ^17.0.38
+    "@types/node-cleanup": ^2
     "@typescript-eslint/eslint-plugin": ^5.27.0
     "@typescript-eslint/parser": ^5.27.0
     bufferutil: ^4.0.6
@@ -2847,9 +2855,11 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unicorn: ^42.0.0
     fuse.js: ^6.6.2
+    node-cleanup: ^2.1.2
     pm2: ^5.2.0
     prettier: ^2.6.2
     tsup: ^6.0.1
+    twitter-api-v2: ^1.12.2
     typescript: ^4.7.2
     utf-8-validate: ^5.0.9
     zlib-sync: ^0.1.7
@@ -3313,6 +3323,13 @@ __metadata:
   version: 2.0.2
   resolution: "netmask@npm:2.0.2"
   checksum: c65cb8d3f7ea5669edddb3217e4c96910a60d0d9a4b52d9847ff6b28b2d0277cd8464eee0ef85133cdee32605c57940cacdd04a9a019079b091b6bba4cb0ec22
+  languageName: node
+  linkType: hard
+
+"node-cleanup@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "node-cleanup@npm:2.1.2"
+  checksum: 584cdc3e42560a998b4579f91ed8f936b27011628f3102e5a1093205f0691cdf8d899287d1f2e4d2071ea4ab1d615810bad6dbe2b988ef173a1cbaa76d8165b3
   languageName: node
   linkType: hard
 
@@ -4609,6 +4626,13 @@ __metadata:
   version: 14.0.0
   resolution: "twemoji-parser@npm:14.0.0"
   checksum: 8eede69cf71f94735de7b6fddf5dfbfe3cb2e01baefc3201360984ccc97cfc659f206c8f73bd1405a2282779af3b79a8c9bed3864c672e15e2dc6f8ce4810452
+  languageName: node
+  linkType: hard
+
+"twitter-api-v2@npm:^1.12.2":
+  version: 1.12.2
+  resolution: "twitter-api-v2@npm:1.12.2"
+  checksum: 5dc521fa930ba2ef70175e0b8a08b5aebec79926e667ae50ec35501c34004c18a1eb3c29d102f8201c8f2d670b7fb160bb0e74801ea8081945f12288b1887106
   languageName: node
   linkType: hard
 
