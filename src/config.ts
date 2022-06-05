@@ -1,4 +1,4 @@
-import type { ClientOptions } from 'discord.js';
+import { type ClientOptions, Collection, LimitedCollection } from 'discord.js';
 import { GatewayIntentBits } from 'discord-api-types/v9';
 import { cleanEnv, str } from 'envalid';
 import { LogLevel } from '@sapphire/framework';
@@ -19,9 +19,26 @@ export const env = cleanEnv(process.env, {
 	TWITTER_ACCOUNT_ID: str({ default: '' })
 });
 
+const necessaryManagers: ReadonlySet<string> = new Set([
+	'GuildManager', //
+	'GuildChannelManager',
+	'ChannelManager',
+	'RoleManager',
+	'PermissionOverwriteManager'
+]);
+
 export const clientOptions: ClientOptions = {
 	// Intents dictate what events the client will receive.
 	intents: GatewayIntentBits.Guilds,
 	logger: { level: env.isProduction ? LogLevel.Info : LogLevel.Debug },
-	loadDefaultErrorListeners: false
+	loadDefaultErrorListeners: false,
+	makeCache: (manager) => {
+		// We don't need to cache anything. However, discord.js' internals currently require the five caches described
+		// in `necessaryManagers`, so we let those ones go.
+		if (necessaryManagers.has(manager.name)) {
+			return new Collection();
+		}
+
+		return new LimitedCollection({ maxSize: 0 });
+	}
 };

@@ -10,7 +10,6 @@ import cleanup from 'node-cleanup';
 cleanup(() => {
 	client.destroy();
 	container.twitter?.stream.destroy();
-	console.log('DOne!');
 });
 
 const client = new SapphireClient(clientOptions);
