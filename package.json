@@ -37,6 +37,8 @@
 		"@sapphire/type": "^2.2.4",
 		"@sapphire/utilities": "^3.6.2",
 		"@vitalets/google-translate-api": "^8.0.0",
+		"@vvo/tzdb": "^6.50.0",
+		"cheerio": "^1.0.0-rc.11",
 		"colorette": "^2.0.16",
 		"discord-api-types": "^0.33.1",
 		"discord.js": "^13.7.0",

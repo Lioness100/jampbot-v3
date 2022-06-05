@@ -1,4 +1,3 @@
-// import { sendError } from '#utils/responses';
 import { Listener, type Events, type InteractionHandlerError } from '@sapphire/framework';
 import { bold, redBright } from 'colorette';
 
