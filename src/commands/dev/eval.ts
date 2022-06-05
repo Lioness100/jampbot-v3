@@ -1,4 +1,4 @@
-import { type Message, Constants, MessageActionRow, MessageButton, Modal, TextInputComponent, type ButtonInteraction } from 'discord.js';
+import { Message, Constants, MessageActionRow, MessageButton, Modal, TextInputComponent, type ButtonInteraction } from 'discord.js';
 import { EmbedLimits } from '@sapphire/discord.js-utilities';
 import { createEmbed, sendError } from '#utils/responses';
 import { CustomId, EmbedColor } from '#utils/constants';
@@ -10,6 +10,9 @@ import { inspect } from 'node:util';
 import { Buffer } from 'node:buffer';
 import { Type } from '@sapphire/type';
 import { env } from '#root/config';
+import { setTimeout } from 'node:timers';
+import { resolveAPIStructure } from '#utils/interactions';
+import { Time } from '@sapphire/time-utilities';
 
 export class EvalCommand extends Command {
 	public override async chatInputRun(interaction: Command.Interaction) {
@@ -79,10 +82,15 @@ export class EvalCommand extends Command {
 		const buttonRow = new MessageActionRow().setComponents(reviseButton);
 		await submission.editReply({ embeds: [embed], components: [buttonRow], files });
 
+		setTimeout(() => {
+			const message = resolveAPIStructure(submission.message!, Message);
+			void message.edit({ components: [] }).catch(() => null);
+		}, Time.Minute * 5);
+
 		const buttonInteraction = await message
 			.awaitMessageComponent({
 				componentType: Constants.MessageComponentTypes.BUTTON,
-				time: 1000 * 60 * 5,
+				time: Time.Minute * 5,
 				filter: async (buttonInteraction) => {
 					if (buttonInteraction.user.id !== interaction.user.id) {
 						await sendError(interaction, `This button is only for ${interaction.user}`);
