@@ -435,6 +435,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/fetch@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "@sapphire/fetch@npm:2.3.1"
+  dependencies:
+    cross-fetch: ^3.1.5
+  checksum: 3cb6d2a74fd107901d6902b8949ae7b3780da7efb519fc411fee1496d4d0d72cec1a68e19fc6ac47984f37f509567dbbc4ce82bea5c1ff437f119fc0afa8359d
+  languageName: node
+  linkType: hard
+
 "@sapphire/framework@npm:next":
   version: 3.0.0-next.b7485a2.0
   resolution: "@sapphire/framework@npm:3.0.0-next.b7485a2.0"
@@ -1559,6 +1568,15 @@ __metadata:
   version: 4.1.97
   resolution: "croner@npm:4.1.97"
   checksum: f4af304ee263685ee727a96ecceff9bff02b840582ab937b1254f9eacfc2248e014e51438165448d3ba5d03952ab6f8cd2e24080d1cb5d73d051536df8f184d3
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "cross-fetch@npm:3.1.5"
+  dependencies:
+    node-fetch: 2.6.7
+  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
   languageName: node
   linkType: hard
 
@@ -3242,6 +3260,7 @@ __metadata:
     "@sapphire/decorators": ^4.3.4
     "@sapphire/discord.js-utilities": ^4.11.0
     "@sapphire/eslint-config": ^4.3.5
+    "@sapphire/fetch": ^2.3.1
     "@sapphire/framework": next
     "@sapphire/plugin-logger": ^2.2.1
     "@sapphire/prettier-config": ^1.4.3
@@ -3781,6 +3800,20 @@ __metadata:
   version: 2.1.2
   resolution: "node-cleanup@npm:2.1.2"
   checksum: 584cdc3e42560a998b4579f91ed8f936b27011628f3102e5a1093205f0691cdf8d899287d1f2e4d2071ea4ab1d615810bad6dbe2b988ef173a1cbaa76d8165b3
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
   languageName: node
   linkType: hard
 

@@ -20,7 +20,8 @@ export const env = cleanEnv(process.env, {
 	TWITTER_NOTIFICATION_CHANNEL_ID: optionalStringPredicate,
 	TWITTER_ACCOUNT_ID: optionalStringPredicate,
 	WELCOME_CHANNEL_ID: optionalStringPredicate,
-	INFORMATION_CHANNEL_ID: optionalStringPredicate
+	INFORMATION_CHANNEL_ID: optionalStringPredicate,
+	WOLFRAM_APP_ID: optionalStringPredicate
 });
 
 const necessaryManagers: ReadonlySet<string> = new Set([
