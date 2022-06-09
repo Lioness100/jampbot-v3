@@ -35,7 +35,7 @@ export class EvalCommand extends Command {
 	) {
 		const codeInput = new TextInputComponent() //
 			.setCustomId(CustomId.CodeInput)
-			.setLabel(`${parameters.async ? 'Async' : ''}Code`)
+			.setLabel(`${parameters.async ? 'Async ' : ''}Code`)
 			.setRequired(true)
 			.setStyle('PARAGRAPH');
 
