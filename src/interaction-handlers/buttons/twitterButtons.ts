@@ -1,5 +1,5 @@
 import { resolveAPIStructure } from '#utils/interactions';
-import { TwitterNotifier } from '#services/TwitterNotifier';
+import { TwitterService } from '#services/TwitterService';
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import { type ButtonInteraction, Message, type MessageButton, Constants, Modal, MessageActionRow, TextInputComponent } from 'discord.js';
@@ -7,10 +7,7 @@ import { CustomId } from '#utils/constants';
 import { env } from '#root/config';
 import { createEmbed } from '#utils/responses';
 
-@ApplyOptions<InteractionHandler.Options>({
-	interactionHandlerType: InteractionHandlerTypes.Button,
-	enabled: TwitterNotifier.canRun()
-})
+@ApplyOptions<InteractionHandler.Options>({ interactionHandlerType: InteractionHandlerTypes.Button, enabled: TwitterService.canRun() })
 export class TwitterButtonInteractionHandler extends InteractionHandler {
 	private static readonly validIds = [
 		CustomId.Like,

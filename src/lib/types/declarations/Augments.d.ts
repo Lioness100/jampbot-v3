@@ -1,4 +1,4 @@
-import type { TwitterNotifier } from '#services/TwitterNotifier';
+import type { TwitterService } from '#services/TwitterService';
 import type { SapphireClient } from '@sapphire/framework';
 
 declare module '@sapphire/framework' {
@@ -9,7 +9,7 @@ declare module '@sapphire/framework' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		twitter: TwitterNotifier;
+		twitter: TwitterService;
 	}
 
 	interface Piece {

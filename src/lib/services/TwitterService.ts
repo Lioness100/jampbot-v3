@@ -4,8 +4,9 @@ import { container } from '@sapphire/framework';
 import { Constants, MessageActionRow, MessageButton } from 'discord.js';
 import { CustomId } from '#utils/constants';
 import { inspect } from 'node:util';
+import { dedent } from 'ts-dedent';
 
-export class TwitterNotifier {
+export class TwitterService {
 	public readonly api = new TwitterApi({
 		appKey: env.TWITTER_API_KEY,
 		appSecret: env.TWITTER_API_KEY_SECRET,
@@ -14,9 +15,6 @@ export class TwitterNotifier {
 	}).v2.readWrite;
 
 	private readonly client = new TwitterApi(env.TWITTER_BEARER_TOKEN).v2.readOnly;
-
-	// public readonly api = new TwitterApi(env.TWITTER_BEARER_TOKEN).v2.readWrite;
-
 	public stream!: TweetStream;
 
 	public async init() {
@@ -33,7 +31,7 @@ export class TwitterNotifier {
 			// This stream rule will match any tweet including the term "team jamp", using the #teamjamp hashtag, mentioning
 			// @team_jamp. The conditions are case insensitive, and retweets and tweets from team_jamp itself will be ignored.
 			await this.client.updateStreamRules({
-				add: [{ value: `("team jamp" OR #teamjamp OR #tj OR @team_jamp) -is:retweet -from:team_jamp` }]
+				add: [{ value: `("team jamp" OR #teamjamp OR @team_jamp) -is:retweet -from:team_jamp` }]
 			});
 
 			this.stream = await this.client.searchStream({ 'tweet.fields': ['author_id'] });
@@ -75,7 +73,13 @@ export class TwitterNotifier {
 			.setStyle(Constants.MessageButtonStyles.DANGER);
 
 		const row = new MessageActionRow().setComponents(likeButton, retweetButton, replyButton, blockButton);
-		await channel.send({ content: `🔔 New tweet detected!\n${this.createTweetLink(tweet.author_id!, tweet.id)}`, components: [row] });
+		await channel.send({
+			content: dedent`
+				🔔 New tweet detected!
+				${this.createTweetLink(tweet.author_id!, tweet.id)}
+			`,
+			components: [row]
+		});
 	}
 
 	private createTweetLink(author: string, id: string) {

@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, container } from '@sapphire/framework';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { clientOptions } from '#root/config';
-import { TwitterNotifier } from '#services/TwitterNotifier';
+import { TwitterService } from '#services/TwitterService';
 import cleanup from 'node-cleanup';
 
 cleanup(() => {
@@ -24,7 +24,7 @@ Object.defineProperty(Piece.prototype, 'client', { get: () => container.client }
 
 await client.login();
 
-if (TwitterNotifier.canRun()) {
-	container.twitter = new TwitterNotifier();
+if (TwitterService.canRun()) {
+	container.twitter = new TwitterService();
 	await container.twitter.init();
 }
