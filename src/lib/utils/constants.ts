@@ -26,5 +26,6 @@ export const enum CustomId {
 
 // You can replace the "name" portion of the emoji with "_" and it will always work.
 export const enum Emoji {
-	PridePog = '<:_:796585159607975947>'
+	PridePog = '<:_:796585159607975947>',
+	SadBowser = '<:_:717925128331329607>'
 }

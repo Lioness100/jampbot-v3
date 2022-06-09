@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import { MessageEmbed, type ColorResolvable, Interaction, InteractionResponseFields } from 'discord.js';
-import { EmbedColor } from '#utils/constants';
+import { MessageEmbed, type ColorResolvable } from 'discord.js';
+import { EmbedColor, Emoji } from '#utils/constants';
 import { italic } from '@discordjs/builders';
+import { safelyReplyToInteraction, SafeReplyToInteractionParameters } from '@sapphire/discord.js-utilities';
 
 /**
  * Creates an embed.
@@ -15,12 +16,23 @@ export const createEmbed = (description?: string, color: ColorResolvable = Embed
  */
 export const sendError = async (
 	// "& InteractionResponseFields" will ensure the interaction is repliable to.
-	interaction: Interaction & InteractionResponseFields,
+	interaction: SafeReplyToInteractionParameters['messageOrInteraction'],
 	description: string,
-	options: { ephemeral?: boolean; tip?: string; prefix?: string } = {}
+	rawOptions?: { ephemeral?: boolean; tip?: string; prefix?: string; suffix?: boolean }
 ) => {
+	const options = {
+		ephemeral: true,
+		suffix: true,
+		prefix: `${Emoji.SadBowser} `,
+		...rawOptions
+	};
+
 	// Core sapphire errors end in ".", so that needs to be accounted for.
-	const formattedError = `${options.prefix ?? '❌ '}${description.endsWith('.') ? description.slice(0, -1) : description}!`;
+	if (description.endsWith('.') && options.suffix) {
+		description = description.slice(0, -1);
+	}
+
+	const formattedError = `${options.prefix}${description}${options.suffix ? '!' : ''}`;
 	const formattedDescription = `${formattedError}${options.tip ? `\n${italic(`💡${options.tip}`)}` : ''}`;
 
 	const payload = {
@@ -29,8 +41,12 @@ export const sendError = async (
 	};
 
 	// eslint-disable-next-line @typescript-eslint/unbound-method
-	const replyFn = interaction.replied ? interaction.followUp : interaction.deferred ? interaction.editReply : interaction.reply;
-	await replyFn.call(interaction, payload);
+	await safelyReplyToInteraction({
+		interactionReplyContent: payload,
+		interactionEditReplyContent: payload,
+		componentUpdateContent: payload,
+		messageOrInteraction: interaction
+	});
 };
 
 // This method of resolving `Message` instances from interaction replies should be used if channel or guild sweeping is
