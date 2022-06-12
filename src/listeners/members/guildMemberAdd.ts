@@ -7,7 +7,7 @@ import { Listener, Events } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath, URL } from 'node:url';
-import { dedent } from 'ts-dedent';
+import { stripIndent } from 'common-tags';
 
 const banner = new Image();
 banner.src = await readFile(new URL('../assets/images/welcome-banner.png', rootURL));
@@ -49,7 +49,7 @@ export class GuildMemberAddListener extends Listener<typeof Events.GuildMemberAd
 
 		const informationChannel = channelMention(env.INFORMATION_CHANNEL_ID);
 		await channel.send({
-			content: dedent`
+			content: stripIndent`
 				Hi ${member.toString()}, welcome to ${bold('Team Jamp!')} To find out more about what we do here, please read ${informationChannel}!
 				Have a great time, and remember to contact a mod with any questions ${Emoji.PridePog}
 			`,

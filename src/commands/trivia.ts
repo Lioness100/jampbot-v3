@@ -3,7 +3,7 @@ import { Command } from '#structures/Command';
 import { OpenTDBService, QuestionDifficulty } from '#services/OpenTDBService';
 import { createEmbed, sendError } from '#utils/responses';
 import { bold, inlineCode } from '@discordjs/builders';
-import { dedent } from 'ts-dedent';
+import { stripIndent } from 'common-tags';
 import { Time } from '@sapphire/time-utilities';
 import { cast } from '@sapphire/utilities';
 
@@ -35,7 +35,7 @@ export class TriviaCommand extends Command {
 			.join('\n');
 
 		const [difficultyName] = Object.entries(QuestionDifficulty).find(([, value]) => value === question.difficulty)!;
-		const content = dedent`
+		const content = stripIndent`
 			${bold(decodeURIComponent(question.question))}
 
 			${bold('Category:')} ${decodeURIComponent(question.category)}

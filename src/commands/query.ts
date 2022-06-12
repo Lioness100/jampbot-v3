@@ -4,7 +4,7 @@ import { cutText } from '@sapphire/utilities';
 import { AutoCompleteLimits, EmbedLimits, MessageLimits, PaginatedMessage, type PaginatedMessageAction } from '@sapphire/discord.js-utilities';
 import { ApplyOptions } from '@sapphire/decorators';
 import { WolframService } from '#services/WolframService';
-import { dedent } from 'ts-dedent';
+import { stripIndent } from 'common-tags';
 import { MessageEmbed, Constants } from 'discord.js';
 import { inlineCode } from '@discordjs/builders';
 
@@ -37,7 +37,7 @@ export class QueryCommand extends Command {
 		}
 
 		if (!result.success) {
-			const description = dedent`
+			const description = stripIndent`
 				Wolfram Alpha did not find any results for your query!
 				${result.didyoumeans?.val ? `Did you mean "${result.didyoumeans.val}"?` : ''}
 			`;

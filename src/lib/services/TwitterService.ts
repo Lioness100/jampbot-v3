@@ -4,7 +4,7 @@ import { container } from '@sapphire/framework';
 import { Constants, MessageActionRow, MessageButton } from 'discord.js';
 import { CustomId } from '#utils/constants';
 import { inspect } from 'node:util';
-import { dedent } from 'ts-dedent';
+import { stripIndent } from 'common-tags';
 
 export class TwitterService {
 	public readonly api = new TwitterApi({
@@ -74,7 +74,7 @@ export class TwitterService {
 
 		const row = new MessageActionRow().setComponents(likeButton, retweetButton, replyButton, blockButton);
 		await channel.send({
-			content: dedent`
+			content: stripIndent`
 				🔔 New tweet detected!
 				${this.createTweetLink(tweet.author_id!, tweet.id)}
 			`,
