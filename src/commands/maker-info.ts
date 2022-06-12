@@ -1,7 +1,7 @@
 import { Command } from '#structures/Command';
 import { MarioMakerService } from '#services/MarioMakerService';
 import { createEmbed, sendError } from '#utils/responses';
-import { commaListsAnd, stripIndent } from 'common-tags';
+import { commaListsAnd, stripIndents } from 'common-tags';
 import { blockQuote, bold, time, TimestampStyles } from '@discordjs/builders';
 import { Emoji } from '#utils/constants';
 import { countryCodeToFlag } from '#utils/common';
@@ -44,7 +44,7 @@ export class MakerInfoCommand extends Command {
 			? `${time(maker.last_uploaded_level, TimestampStyles.RelativeTime)} (${time(maker.last_uploaded_level)})`
 			: 'N/A';
 
-		let content = stripIndent(commaListsAnd)`
+		let content = stripIndents(commaListsAnd)`
 			${countryCodeToFlag(maker.country)} ${bold('Country:')} ${regionNames.of(maker.country)}
 			⌛ ${bold('Last Active:')} ${time(maker.last_active, TimestampStyles.RelativeTime)} (${time(maker.last_active)})
 			💖 ${bold('Likes:')} ${numberFormatter.format(maker.likes)}

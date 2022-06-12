@@ -1,7 +1,7 @@
 import { Command } from '#structures/Command';
 import { MarioMakerService } from '#services/MarioMakerService';
 import { createEmbed, sendError } from '#utils/responses';
-import { commaListsAnd, stripIndent } from 'common-tags';
+import { commaListsAnd, stripIndents } from 'common-tags';
 import { bold, inlineCode, time, TimestampStyles } from '@discordjs/builders';
 import { Emoji } from '#utils/constants';
 import { Constants, MessageActionRow, MessageButton } from 'discord.js';
@@ -28,7 +28,7 @@ export class LevelInfoCommand extends Command {
 
 		const clearRateDisplay = `${numberFormatter.format(level.clears)}/${numberFormatter.format(level.attempts)} (${level.clear_rate})`;
 
-		const content = stripIndent(commaListsAnd)`
+		const content = stripIndents(commaListsAnd)`
 			${level.description}
 		
 			🧑‍💻 ${bold('Uploader:')} ${MarioMakerService.formatNameShort(level.uploader)} (${inlineCode(MarioMakerService.formatCode(level.uploader.code))})

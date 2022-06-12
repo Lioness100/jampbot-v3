@@ -2,19 +2,14 @@ import { MessageButton, MessageActionRow, Message, Constants } from 'discord.js'
 import { Command } from '#structures/Command';
 import { OpenTDBService, QuestionDifficulty } from '#services/OpenTDBService';
 import { createEmbed, sendError } from '#utils/responses';
-import { bold, inlineCode, time, TimestampStyles } from '@discordjs/builders';
-import { stripIndent } from 'common-tags';
+import { bold } from '@discordjs/builders';
+import { stripIndents } from 'common-tags';
 import { Time } from '@sapphire/time-utilities';
 import { cast } from '@sapphire/utilities';
 
 export class TriviaCommand extends Command {
 	private readonly api = new OpenTDBService();
-	private static readonly emojis: Record<number, string> = {
-		0: '1️⃣',
-		1: '2️⃣',
-		2: '3️⃣',
-		3: '4️⃣'
-	};
+	private static readonly emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣'];
 
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const category = interaction.options.getString('category') ?? undefined;
@@ -30,23 +25,20 @@ export class TriviaCommand extends Command {
 		const options = [...question.incorrect_answers];
 		options.splice(idx, 0, question.correct_answer);
 
-		const optionsDisplay = options
-			.map((option, optionIdx) => `${bold(`${inlineCode((optionIdx + 1).toString())} -`)} ${decodeURIComponent(option)}`)
-			.join('\n');
+		const optionsDisplay = options.map((option, idx) => `${TriviaCommand.emojis[idx]} ${decodeURIComponent(option)}`).join('\n');
 
 		const [difficultyName] = Object.entries(QuestionDifficulty).find(([, value]) => value === question.difficulty)!;
-		const content = stripIndent`
-			${bold(decodeURIComponent(question.question))}
-
+		const content = stripIndents`
 			${bold('Category:')} ${decodeURIComponent(question.category)}
 			${bold('Difficulty:')} ${difficultyName}
-		
+
 			${bold('Options')}
 			${optionsDisplay}
 		
-			Your time is up ${time(Math.floor(Date.now() / 1000) + 15, TimestampStyles.RelativeTime)}!
+			You have 15 seconds!
 		`;
 
+		console.log(content);
 		const buttons = options.map((_, optionIdx) =>
 			new MessageButton() //
 				.setCustomId(optionIdx.toString())
@@ -56,7 +48,7 @@ export class TriviaCommand extends Command {
 
 		const row = new MessageActionRow().setComponents(buttons);
 
-		const embed = createEmbed(content).setTitle('Trivia! 🎉');
+		const embed = createEmbed(content).setTitle(decodeURIComponent(question.question));
 		const message = (await interaction.reply({
 			embeds: [embed],
 			components: [row],
