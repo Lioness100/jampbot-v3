@@ -44,7 +44,7 @@ export class TriviaCommand extends Command {
 			${bold('Options')}
 			${optionsDisplay}
 		
-			Your time is up ${time(Math.floor((Date.now() + Time.Second * 15) / 1000), TimestampStyles.RelativeTime)}!
+			Your time is up ${time(Math.floor(Date.now() / 1000) + 15, TimestampStyles.RelativeTime)}!
 		`;
 
 		const buttons = options.map((_, optionIdx) =>
@@ -89,7 +89,9 @@ export class TriviaCommand extends Command {
 			cast<MessageButton>(component).setStyle(style).setDisabled(true);
 		}
 
-		await message.edit({ content: message.content.replace(/.+$/, ''), components: message.components });
+		embed.setDescription(embed.description!.replace(/.+$/, ''));
+
+		await message.edit({ embeds: [embed], components: message.components });
 		const answer = bold(decodeURIComponent(options[idx]));
 
 		if (!button) {

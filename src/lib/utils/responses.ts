@@ -39,7 +39,13 @@ export const sendError = async (
 		ephemeral: options.ephemeral ?? true
 	};
 
-	await (interaction.replied || interaction.deferred ? interaction.editReply(payload) : interaction.reply(payload)).catch(() => null);
+	if (interaction.deferred) {
+		await interaction.editReply(payload);
+	} else if (interaction.replied) {
+		await interaction.followUp(payload);
+	} else {
+		await interaction.reply(payload);
+	}
 };
 
 // This method of resolving `Message` instances from interaction replies should be used if channel or guild sweeping is
