@@ -85,18 +85,18 @@ export class MarioMakerService {
 		return new URL(`level_entire_thumbnail/${code}`, this.baseURL).toString();
 	}
 
-	public static readonly badgeEmojis = [
-		Emoji.GoldRibbon,
-		Emoji.SilverRibbon,
-		Emoji.BronzeRibbon,
-		Emoji.GoldMedal,
-		Emoji.SilverMedal,
-		Emoji.BronzeMedal
-	];
+	public static readonly badgeEmojis: Record<number, string> = {
+		1: Emoji.GoldRibbon,
+		2: Emoji.SilverRibbon,
+		3: Emoji.BronzeRibbon,
+		4: Emoji.GoldMedal,
+		5: Emoji.SilverMedal,
+		6: Emoji.BronzeMedal
+	};
 
 	public static formatNameShort(user: MakerInfoResponse) {
 		const badges = user.badges.map((badge) => this.badgeEmojis[badge.rank]);
-		return `${user.name} [${badges.join('')}]`;
+		return `${user.name}${badges.length ? ` [${badges.join('')}]` : ''}`;
 	}
 
 	public static formatCode(code: string) {

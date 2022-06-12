@@ -20,7 +20,7 @@ export class TranslateCommand extends Command {
 			.setTitle(`${author.tag} said...`)
 			.setFooter({ text: `Translated from ${from}` });
 
-		await interaction.reply({ embeds: [embed] });
+		await interaction.reply({ embeds: [embed], ephemeral: true });
 	}
 
 	private static resolveLocale(fullLocale: string) {

@@ -2,7 +2,7 @@ import { MessageButton, MessageActionRow, Message, Constants } from 'discord.js'
 import { Command } from '#structures/Command';
 import { OpenTDBService, QuestionDifficulty } from '#services/OpenTDBService';
 import { createEmbed, sendError } from '#utils/responses';
-import { bold, inlineCode } from '@discordjs/builders';
+import { bold, inlineCode, time, TimestampStyles } from '@discordjs/builders';
 import { stripIndent } from 'common-tags';
 import { Time } from '@sapphire/time-utilities';
 import { cast } from '@sapphire/utilities';
@@ -44,7 +44,7 @@ export class TriviaCommand extends Command {
 			${bold('Options')}
 			${optionsDisplay}
 		
-			You have 15 seconds!
+			Your time is up ${time(Math.floor((Date.now() + Time.Second * 15) / 1000), TimestampStyles.RelativeTime)}!
 		`;
 
 		const buttons = options.map((_, optionIdx) =>
@@ -89,7 +89,7 @@ export class TriviaCommand extends Command {
 			cast<MessageButton>(component).setStyle(style).setDisabled(true);
 		}
 
-		await message.edit({ components: message.components });
+		await message.edit({ content: message.content.replace(/.+$/, ''), components: message.components });
 		const answer = bold(decodeURIComponent(options[idx]));
 
 		if (!button) {

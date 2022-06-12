@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import { MessageEmbed, type ColorResolvable } from 'discord.js';
+import { Interaction, InteractionResponseFields, MessageEmbed, type ColorResolvable } from 'discord.js';
 import { EmbedColor, Emoji } from '#utils/constants';
 import { italic } from '@discordjs/builders';
-import { safelyReplyToInteraction, SafeReplyToInteractionParameters } from '@sapphire/discord.js-utilities';
 
 /**
  * Creates an embed.
@@ -16,7 +15,7 @@ export const createEmbed = (description?: string, color: ColorResolvable = Embed
  */
 export const sendError = async (
 	// "& InteractionResponseFields" will ensure the interaction is repliable to.
-	interaction: SafeReplyToInteractionParameters['messageOrInteraction'],
+	interaction: Interaction & InteractionResponseFields,
 	description: string,
 	rawOptions?: { ephemeral?: boolean; tip?: string; prefix?: string; suffix?: boolean }
 ) => {
@@ -40,13 +39,7 @@ export const sendError = async (
 		ephemeral: options.ephemeral ?? true
 	};
 
-	// eslint-disable-next-line @typescript-eslint/unbound-method
-	await safelyReplyToInteraction({
-		interactionReplyContent: payload,
-		interactionEditReplyContent: payload,
-		componentUpdateContent: payload,
-		messageOrInteraction: interaction
-	});
+	await (interaction.replied || interaction.deferred ? interaction.editReply(payload) : interaction.reply(payload)).catch(() => null);
 };
 
 // This method of resolving `Message` instances from interaction replies should be used if channel or guild sweeping is

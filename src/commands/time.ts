@@ -17,7 +17,7 @@ export class TimeCommand extends Command {
 			return sendError(interaction, 'Invalid timezone');
 		}
 
-		const embed = createEmbed().setTitle(`⌚ ${time.value}`);
+		const embed = createEmbed().setTitle(`⌚ It is ${time.value}`);
 		return interaction.reply({ embeds: [embed] });
 	}
 
