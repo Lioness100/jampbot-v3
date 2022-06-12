@@ -1,7 +1,14 @@
 import { Command } from '@sapphire/framework';
 import { createEmbed, sendError } from '#utils/responses';
 import { cutText } from '@sapphire/utilities';
-import { AutoCompleteLimits, EmbedLimits, MessageLimits, PaginatedMessage, type PaginatedMessageAction } from '@sapphire/discord.js-utilities';
+import {
+	AutoCompleteLimits,
+	SelectMenuLimits,
+	EmbedLimits,
+	MessageLimits,
+	PaginatedMessage,
+	type PaginatedMessageAction
+} from '@sapphire/discord.js-utilities';
 import { ApplyOptions } from '@sapphire/decorators';
 import { WolframService } from '#services/WolframService';
 import { stripIndents } from 'common-tags';
@@ -66,7 +73,7 @@ export class QueryCommand extends Command {
 
 		const info = Array.isArray(result.infos) ? result.infos[0] : result.infos;
 
-		for (const pod of result.pods) {
+		for (const pod of result.pods.slice(0, SelectMenuLimits.MaximumOptionsLength)) {
 			if (pod.error) {
 				continue;
 			}
