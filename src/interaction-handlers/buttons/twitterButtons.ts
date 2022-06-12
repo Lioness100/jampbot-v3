@@ -22,13 +22,13 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 	public override async run(interaction: ButtonInteraction) {
 		const tweetRegex = /\/(?<author>\d+)\/status\/(?<id>\d+)/;
 		const message = resolveAPIStructure(interaction.message, Message);
-		const matches = tweetRegex.exec(message.content);
+		const match = tweetRegex.exec(message.content);
 
-		if (!matches?.groups) {
+		if (!match?.groups) {
 			return;
 		}
 
-		const { author, id } = matches.groups;
+		const { author, id } = match.groups;
 
 		const component = message.components[0].components.find(({ customId }) => customId === interaction.customId) as MessageButton;
 		switch (interaction.customId) {

@@ -5,6 +5,7 @@ import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, 
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { clientOptions } from '#root/config';
 import { TwitterService } from '#services/TwitterService';
+import { MarioMakerService } from '#services/MarioMakerService';
 import cleanup from 'node-cleanup';
 
 cleanup(() => {
@@ -28,3 +29,5 @@ if (TwitterService.canRun()) {
 	container.twitter = new TwitterService();
 	await container.twitter.init();
 }
+
+container.marioMaker = new MarioMakerService();
