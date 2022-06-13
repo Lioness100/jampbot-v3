@@ -91,7 +91,7 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 
 			case CustomId.Unblock: {
 				await this.container.twitter.api.unblock(env.TWITTER_ACCOUNT_ID, author);
-				component.setCustomId(CustomId.Block).setEmoji('🤐').setLabel('Block').setStyle(Constants.MessageButtonStyles.PRIMARY);
+				component.setCustomId(CustomId.Block).setEmoji('🤐').setLabel('Block').setStyle(Constants.MessageButtonStyles.DANGER);
 				break;
 			}
 		}
