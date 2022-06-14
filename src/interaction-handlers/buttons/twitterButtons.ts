@@ -34,25 +34,25 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 		switch (interaction.customId) {
 			case CustomId.Like: {
 				await this.container.twitter.api.like(env.TWITTER_ACCOUNT_ID, id);
-				component.setCustomId(CustomId.Dislike).setEmoji('👎').setLabel('Unlike').setStyle(Constants.MessageButtonStyles.DANGER);
+				component.setCustomId(CustomId.Dislike).setEmoji('👎').setLabel('Unlike');
 				break;
 			}
 
 			case CustomId.Dislike: {
 				await this.container.twitter.api.unlike(env.TWITTER_ACCOUNT_ID, id);
-				component.setCustomId(CustomId.Like).setEmoji('👍').setLabel('Like').setStyle(Constants.MessageButtonStyles.PRIMARY);
+				component.setCustomId(CustomId.Like).setEmoji('👍').setLabel('Like');
 				break;
 			}
 
 			case CustomId.Retweet: {
 				await this.container.twitter.api.retweet(env.TWITTER_ACCOUNT_ID, id);
-				component.setCustomId(CustomId.UnRetweet).setLabel('Unretweet').setStyle(Constants.MessageButtonStyles.DANGER);
+				component.setCustomId(CustomId.UnRetweet).setLabel('Unretweet');
 				break;
 			}
 
 			case CustomId.UnRetweet: {
 				await this.container.twitter.api.unretweet(env.TWITTER_ACCOUNT_ID, id);
-				component.setCustomId(CustomId.Retweet).setLabel('Retweet').setStyle(Constants.MessageButtonStyles.PRIMARY);
+				component.setCustomId(CustomId.Retweet).setLabel('Retweet');
 				break;
 			}
 
@@ -85,18 +85,21 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 
 			case CustomId.Block: {
 				await this.container.twitter.api.block(env.TWITTER_ACCOUNT_ID, author);
-				component.setCustomId(CustomId.Unblock).setEmoji('👋').setLabel('Unblock').setStyle(Constants.MessageButtonStyles.PRIMARY);
+				component.setCustomId(CustomId.Unblock).setEmoji('👋').setLabel('Unblock');
 				break;
 			}
 
 			case CustomId.Unblock: {
 				await this.container.twitter.api.unblock(env.TWITTER_ACCOUNT_ID, author);
-				component.setCustomId(CustomId.Block).setEmoji('🤐').setLabel('Block').setStyle(Constants.MessageButtonStyles.DANGER);
+				component.setCustomId(CustomId.Block).setEmoji('🤐').setLabel('Block');
 				break;
 			}
 		}
 
 		if (interaction.customId !== CustomId.Reply) {
+			const newStyle = component.style === 'PRIMARY' ? Constants.MessageButtonStyles.DANGER : Constants.MessageButtonStyles.PRIMARY;
+			component.setStyle(newStyle);
+
 			await interaction.update({ components: message.components });
 		}
 	}

@@ -70,7 +70,7 @@ export class TwitterService {
 			.setCustomId(CustomId.Block)
 			.setEmoji('🤐')
 			.setLabel('Block')
-			.setStyle(Constants.MessageButtonStyles.DANGER);
+			.setStyle(Constants.MessageButtonStyles.PRIMARY);
 
 		const row = new MessageActionRow().setComponents(likeButton, retweetButton, replyButton, blockButton);
 		await channel.send({
