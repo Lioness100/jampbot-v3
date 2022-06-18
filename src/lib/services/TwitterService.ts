@@ -29,9 +29,9 @@ export class TwitterService {
 			}
 
 			// This stream rule will match any tweet including the term "team jamp", using the #teamjamp hashtag, mentioning
-			// @team_jamp. The conditions are case insensitive, and retweets, replies, and tweets from team_jamp itself will be ignored.
+			// @team_jamp. The conditions are case insensitive, and retweets, replies, quote retweets, and tweets from team_jamp itself will be ignored.
 			await this.client.updateStreamRules({
-				add: [{ value: `("team jamp" OR #teamjamp OR @team_jamp) -is:retweet -is:reply -from:team_jamp` }]
+				add: [{ value: `("team jamp" OR #teamjamp OR @team_jamp) -is:retweet -is:quote -is:reply -from:team_jamp` }]
 			});
 
 			this.stream = await this.client.searchStream({ 'tweet.fields': ['author_id'] });
