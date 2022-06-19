@@ -85,21 +85,19 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			suggestedTags.push('Night Themes');
 		}
 
-		const checkPoints = level.objects.get(ObjectId.Checkpoint)?.count ?? 0;
+		const checkPoints = level.objects.get(ObjectId.Checkpoint) ?? 0;
 		suggestedTags.push(`${checkPoints}CP`);
 
 		if (level.theme === ThemeId.Underwater) {
 			suggestedTags.push('Water');
 		}
 
-		const altItemFlag = 0x00000004 as const;
-		const fireFlowerOrSuperBall = level.objects.get(ObjectId.FireFlowerOrSuperBall);
-		if (fireFlowerOrSuperBall) {
-			if (fireFlowerOrSuperBall.flag & altItemFlag) {
-				suggestedTags.push('Superball');
-			} else {
-				suggestedTags.push('Fire Flower');
-			}
+		if (level.objects.has(ObjectId.SuperBall)) {
+			suggestedTags.push('Superball');
+		}
+
+		if (level.objects.has(ObjectId.FireFlower)) {
+			suggestedTags.push('Fire Flower');
 		}
 
 		if (level.objects.has(ObjectId.YoshiOrBoot)) {
@@ -110,8 +108,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			}
 		}
 
-		const link = level.objects.get(ObjectId.MasterSword);
-		if (link && link.flag & altItemFlag) {
+		if (level.objects.has(ObjectId.MasterSword)) {
 			suggestedTags.push('Link');
 		}
 
@@ -171,14 +168,14 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 		}
 
 		if (suggestedTags.length) {
-			const embed = createEmbed(stripIndents`
+			const content = stripIndents`
 				Thank you for submitting your level! We have found some tags that may be helpful:
 				${codeBlock(suggestedTags.join('\n'))}
 				You may add them with the following command:
-				${quote(inlineCode(`!addtags ${submitted?.code ?? code} ${suggestedTags.join(' ')}`))}
-			`);
+				${quote(inlineCode(`!addtags ${submitted} ${suggestedTags.join(', ')}`))}
+			`;
 
-			await message.channel.send({ embeds: [embed] }).catch(() => null);
+			await message.channel.send(content).catch(() => null);
 		}
 
 		if (warnings.length) {

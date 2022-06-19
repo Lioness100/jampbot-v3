@@ -62,14 +62,15 @@ export interface LevelInfoResponse {
 }
 
 export const enum ObjectId {
-	MasterSword = 20,
-	FireFlowerOrSuperBall = 34,
+	MasterSword = 10_20,
+	FireFlower = 34,
+	SuperBall = 10_34,
 	SuperStar,
-	Checkpoint = 40,
-	KoopaCar = 42,
+	Checkpoint = 90,
 	BigMushroomOrRaccoonOrPropellorOrCatOrCape = 44,
 	YoshiOrBoot,
 	Bowser = 62,
+	KoopaCar = 72,
 	FrogOrSMB2OrBalloonOrAcornOrBoomerang = 81,
 	BowserJr = 98,
 	Hammer = 116,
@@ -195,20 +196,22 @@ export class MarioMakerService {
 			theme: body.readUInt8(),
 			autoscroll: Boolean(body.readUInt8(0x1)),
 			isNight: body.readUInt32LE(0x18) === 2,
-			objects: new Map<ObjectId, { count: number; flag: number }>()
+			objects: new Map<ObjectId, number>()
 		};
 
 		const objectCount = body.readUInt32LE(0x1c);
 		const objects = body.subarray(0x48, 0x48 + objectCount * 0x20);
 
+		const altItemFlag = 0x00000004 as const;
+
 		for (let i = 0; i < objectCount; i++) {
 			const objectData = objects.subarray(i * 0x20, i * 0x20 + 0x20);
 			const id = objectData.readUInt16LE(0x18);
 
-			const object = course.objects.get(id) ?? { flag: objectData.readUInt32LE(0xc), count: 0 };
-			object.count++;
+			const isAlt = objectData.readUInt32LE(0xc) & altItemFlag;
+			const count = course.objects.get(id + (isAlt ? 1000 : 0)) ?? 0;
 
-			course.objects.set(id, object);
+			course.objects.set(id, count + 1);
 		}
 
 		return course;
