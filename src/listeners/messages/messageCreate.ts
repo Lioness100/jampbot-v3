@@ -39,7 +39,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
 		if (submitted) {
 			const info = await this.container.marioMaker.getLevelInfo(resolvedCode);
-			if (info && info.uploader.code !== MarioMakerService.resolveCode(submitted.maker_id)) {
+			if (info && submitted.maker_id && info.uploader.code !== MarioMakerService.resolveCode(submitted.maker_id)) {
 				warnings.push(
 					`Registered maker ID (${submitted.maker_id}) does not match the maker ID of the level (${MarioMakerService.formatCode(
 						info.uploader.code
@@ -172,7 +172,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 				Thank you for submitting your level! We have found some tags that may be helpful:
 				${codeBlock(suggestedTags.join('\n'))}
 				You may add them with the following command:
-				${quote(inlineCode(`!addtags ${submitted} ${suggestedTags.join(', ')}`))}
+				${quote(inlineCode(`!addtags ${submitted.code} ${suggestedTags.join(', ')}`))}
 			`;
 
 			await message.channel.send(content).catch(() => null);
