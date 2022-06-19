@@ -21,7 +21,8 @@ export const env = cleanEnv(process.env, {
 	TWITTER_ACCOUNT_ID: optionalStringPredicate,
 	WELCOME_CHANNEL_ID: optionalStringPredicate,
 	INFORMATION_CHANNEL_ID: optionalStringPredicate,
-	WOLFRAM_APP_ID: optionalStringPredicate
+	WOLFRAM_APP_ID: optionalStringPredicate,
+	SHELLBOT_USER_ID: optionalStringPredicate
 });
 
 const necessaryManagers: ReadonlySet<string> = new Set([
@@ -34,7 +35,7 @@ const necessaryManagers: ReadonlySet<string> = new Set([
 
 export const clientOptions: ClientOptions = {
 	// Intents dictate what events the client will receive.
-	intents: GatewayIntentBits.Guilds | GatewayIntentBits.GuildMembers,
+	intents: GatewayIntentBits.Guilds | GatewayIntentBits.GuildMembers | GatewayIntentBits.GuildMessages,
 	logger: { level: env.isProduction ? LogLevel.Info : LogLevel.Debug },
 	loadDefaultErrorListeners: false,
 	makeCache: (manager) => {

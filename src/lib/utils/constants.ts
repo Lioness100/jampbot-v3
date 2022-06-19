@@ -3,6 +3,7 @@ import { getRootData } from '@sapphire/pieces';
 import { Constants } from 'discord.js';
 
 export const rootURL = pathToFileURL(`${getRootData().root}/`);
+export const numberEmojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'] as const;
 
 export enum EmbedColor {
 	Primary = Constants.Colors.AQUA,

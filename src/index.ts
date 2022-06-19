@@ -7,6 +7,7 @@ import { clientOptions } from '#root/config';
 import { TwitterService } from '#services/TwitterService';
 import { MarioMakerService } from '#services/MarioMakerService';
 import cleanup from 'node-cleanup';
+import { MakerTeamsService } from '#services/MakerTeamsService';
 
 cleanup(() => {
 	client.destroy();
@@ -31,3 +32,4 @@ if (TwitterService.canRun()) {
 }
 
 container.marioMaker = new MarioMakerService();
+container.makerTeams = new MakerTeamsService();

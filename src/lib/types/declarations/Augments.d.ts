@@ -13,6 +13,7 @@ declare module '@sapphire/pieces' {
 	interface Container {
 		twitter: TwitterService;
 		marioMaker: MarioMakerService;
+		makerTeams: MakerTeamsService;
 	}
 
 	interface Piece {
