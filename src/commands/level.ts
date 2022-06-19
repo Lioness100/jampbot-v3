@@ -18,7 +18,7 @@ export class LevelInfoCommand extends Command {
 		await interaction.deferReply();
 		const level = await this.container.marioMaker.getLevelInfo(code);
 		if (level.error) {
-			return sendError(interaction, "This level doesn't exist");
+			return sendError(interaction, 'Something went wrong');
 		}
 
 		const numberFormatter = new Intl.NumberFormat(interaction.locale, {
@@ -63,7 +63,7 @@ export class LevelInfoCommand extends Command {
 		registry.registerChatInputCommand(
 			(command) =>
 				command
-					.setName('level-info')
+					.setName('level')
 					.setDescription('Get level info from a code!')
 					.addStringOption((option) =>
 						option //

@@ -78,7 +78,7 @@ export class MakerInfoCommand extends Command {
 		registry.registerChatInputCommand(
 			(command) =>
 				command
-					.setName('maker-info')
+					.setName('maker')
 					.setDescription('Get maker info from a code!')
 					.addStringOption((option) =>
 						option //
