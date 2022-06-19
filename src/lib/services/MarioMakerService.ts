@@ -72,6 +72,7 @@ export const enum ObjectId {
 	Bowser = 62,
 	KoopaCar = 72,
 	FrogOrSMB2OrBalloonOrAcornOrBoomerang = 81,
+	RedCoin = 92,
 	BowserJr = 98,
 	Hammer = 116,
 	Lemmy = 120,

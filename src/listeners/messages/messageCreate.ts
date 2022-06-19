@@ -37,24 +37,22 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 		const suggestedTags: string[] = [];
 		const warnings: string[] = [];
 
-		if (submitted) {
-			const info = await this.container.marioMaker.getLevelInfo(resolvedCode);
-			if (info && submitted.maker_id && info.uploader.code !== MarioMakerService.resolveCode(submitted.maker_id)) {
-				warnings.push(
-					`Registered maker ID (${submitted.maker_id}) does not match the maker ID of the level (${MarioMakerService.formatCode(
-						info.uploader.code
-					)})`
-				);
-			}
+		const info = await this.container.marioMaker.getLevelInfo(resolvedCode);
+		if (info && submitted.maker_id && info.uploader.code !== MarioMakerService.resolveCode(submitted.maker_id)) {
+			warnings.push(
+				`Registered maker ID (${submitted.maker_id}) does not match the maker ID of the level (${MarioMakerService.formatCode(
+					info.uploader.code
+				)})`
+			);
+		}
 
-			if (level.title !== submitted.level_name) {
-				warnings.push(`Submitted level name (${submitted.level_name}) does not match actual level name (${level.title})`);
-			}
+		if (level.title !== submitted.level_name) {
+			warnings.push(`Submitted level name (${submitted.level_name}) does not match actual level name (${level.title})`);
+		}
 
-			const submittedStyle = submitted.tags.split(',')[0];
-			if (submitted && level.style !== submittedStyle) {
-				warnings.push(`Submitted level style (${submittedStyle}) does not match actual level style (${level.style})`);
-			}
+		const submittedStyle = submitted.tags.split(',')[0];
+		if (submitted && level.style !== submittedStyle) {
+			warnings.push(`Submitted level style (${submittedStyle}) does not match actual level style (${level.style})`);
 		}
 
 		const title = level.title.toLowerCase();
@@ -85,11 +83,15 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			suggestedTags.push('Night Themes');
 		}
 
+		if (level.themes.includes(ThemeId.Underwater)) {
+			suggestedTags.push('Water');
+		}
+
 		const checkPoints = level.objects.get(ObjectId.Checkpoint) ?? 0;
 		suggestedTags.push(`${checkPoints}CP`);
 
-		if (level.themes.includes(ThemeId.Underwater)) {
-			suggestedTags.push('Water');
+		if (checkPoints === 2 && level.objects.has(ObjectId.RedCoin)) {
+			suggestedTags.push('Infinite CP');
 		}
 
 		if (level.objects.has(ObjectId.SuperBall)) {
