@@ -65,7 +65,7 @@ export const enum ObjectId {
 	MasterSword = 10_20,
 	FireFlower = 34,
 	SuperBall = 10_34,
-	SuperStar,
+	SuperStar = 35,
 	Checkpoint = 90,
 	BigMushroomOrRaccoonOrPropellorOrCatOrCape = 44,
 	YoshiOrBoot,
@@ -179,7 +179,8 @@ export class MarioMakerService {
 
 	private static decodeCourse(buffer: Buffer) {
 		const header = buffer.subarray(0, 0x200);
-		const body = buffer.subarray(0x200, 0x2dee0);
+		const overworld = buffer.subarray(0x200, 0x2dee0);
+		const subworld = buffer.subarray(0x2e0e0);
 
 		const course = {
 			timeLimit: header.readUInt16LE(0x4),
@@ -193,25 +194,28 @@ export class MarioMakerService {
 				.subarray(0x136, 0x136 + 150)
 				.toString('utf16le')
 				.split('\0')[0],
-			theme: body.readUInt8(),
-			autoscroll: Boolean(body.readUInt8(0x1)),
-			isNight: body.readUInt32LE(0x18) === 2,
+			themes: [overworld.readUInt8(), subworld.readUInt8()],
+			autoscroll: Boolean(overworld.readUInt8(0x1) || subworld.readUInt8(0x1)),
+			isNight: overworld.readUInt32LE(0x18) === 2 || subworld.readUInt32LE(0x18) === 2,
 			objects: new Map<ObjectId, number>()
 		};
 
-		const objectCount = body.readUInt32LE(0x1c);
-		const objects = body.subarray(0x48, 0x48 + objectCount * 0x20);
+		for (const body of [overworld, subworld]) {
+			const objectCount = body.readUInt32LE(0x1c);
+			const objects = body.subarray(0x48, 0x48 + objectCount * 0x20);
 
-		const altItemFlag = 0x00000004 as const;
+			const altItemFlag = 0x00000004 as const;
 
-		for (let i = 0; i < objectCount; i++) {
-			const objectData = objects.subarray(i * 0x20, i * 0x20 + 0x20);
-			const id = objectData.readUInt16LE(0x18);
+			for (let i = 0; i < objectCount; i++) {
+				const objectData = objects.subarray(i * 0x20, i * 0x20 + 0x20);
+				const id = objectData.readUInt16LE(0x18);
 
-			const isAlt = objectData.readUInt32LE(0xc) & altItemFlag;
-			const count = course.objects.get(id + (isAlt ? 1000 : 0)) ?? 0;
+				const isAlt = objectData.readUInt32LE(0xc) & altItemFlag;
+				const fullId = id + (isAlt ? 1000 : 0);
 
-			course.objects.set(id, count + 1);
+				const count = course.objects.get(fullId) ?? 0;
+				course.objects.set(fullId, count + 1);
+			}
 		}
 
 		return course;

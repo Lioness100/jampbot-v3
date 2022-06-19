@@ -88,7 +88,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 		const checkPoints = level.objects.get(ObjectId.Checkpoint) ?? 0;
 		suggestedTags.push(`${checkPoints}CP`);
 
-		if (level.theme === ThemeId.Underwater) {
+		if (level.themes.includes(ThemeId.Underwater)) {
 			suggestedTags.push('Water');
 		}
 
