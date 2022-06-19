@@ -1,8 +1,7 @@
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { fetch } from '@sapphire/fetch';
 import { URL, URLSearchParams } from 'node:url';
 import { env } from '#root/config';
-import { setTimeout } from 'node:timers';
-import { Time } from '@sapphire/time-utilities';
+import { retryable } from '#utils/common';
 
 export interface QueryResult {
 	queryresult: {
@@ -30,13 +29,10 @@ export class WolframService {
 	public async calculate(query: string) {
 		this.params.set('input', query);
 
-		const ac = new AbortController();
-		setTimeout(() => ac.abort(), Time.Minute * 15);
-
 		const url = new URL('https://api.wolframalpha.com/v2/query.jsp');
 		url.search = this.params.toString();
 
-		const res = await fetch<QueryResult>(url, { signal: ac.signal }, FetchResultTypes.JSON);
+		const res = await retryable(() => fetch<QueryResult>(url));
 		return res.queryresult;
 	}
 
@@ -44,7 +40,7 @@ export class WolframService {
 		const url = new URL('https://www.wolframalpha.com/n/v1/api/autocomplete');
 		url.searchParams.append('i', query);
 
-		const res = await fetch<AutocompleteResult>(url, FetchResultTypes.JSON);
+		const res = await retryable(() => fetch<AutocompleteResult>(url));
 		return res.results.map(({ input }) => input);
 	}
 

@@ -1,6 +1,7 @@
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { fetch } from '@sapphire/fetch';
 import type { APIApplicationCommandOptionChoice } from 'discord-api-types/v9';
 import { URL } from 'node:url';
+import { retryable } from '#utils/common';
 
 export enum QuestionDifficulty {
 	Easy = 'easy',
@@ -50,9 +51,10 @@ export class OpenTDBService {
 		this.apiURL.searchParams.append('encode', 'url3986');
 		this.apiURL.searchParams.append('amount', '1');
 		this.apiURL.searchParams.append('type', 'multiple');
+		this.tokenURL.searchParams.append('command', 'request');
 	}
 
-	public async getQuestion(options: { category?: string; difficulty?: QuestionDifficulty } = {}): Promise<QuestionData> {
+	public async getQuestion(options: { category?: string; difficulty?: QuestionDifficulty } = {}): Promise<QuestionData | null> {
 		if (!this.token) {
 			await this.startNewSession();
 		}
@@ -64,7 +66,7 @@ export class OpenTDBService {
 			this.apiURL.searchParams.set('category', options.category);
 		}
 
-		const res = await fetch<TriviaResult>(this.apiURL, FetchResultTypes.JSON);
+		const res = await retryable(() => fetch<TriviaResult>(this.apiURL));
 		if (res.response_code === TriviaResponseCode.TokenEmpty || res.response_code === TriviaResponseCode.TokenNotFound) {
 			await this.startNewSession();
 			return this.getQuestion(options);
@@ -74,13 +76,12 @@ export class OpenTDBService {
 	}
 
 	public async getCategories() {
-		const res = await fetch<CategoriesResult>(this.categoryURL, FetchResultTypes.JSON);
+		const res = await retryable(() => fetch<CategoriesResult>(this.categoryURL));
 		return res.trivia_categories.map<APIApplicationCommandOptionChoice<string>>(({ id, name }) => ({ name, value: id.toString() }));
 	}
 
 	private async startNewSession() {
-		this.tokenURL.searchParams.set('command', 'request');
-		const res = await fetch<TokenRequestResult>(this.tokenURL, FetchResultTypes.JSON);
+		const res = await retryable(() => fetch<TokenRequestResult>(this.tokenURL));
 		this.token = res.token;
 	}
 }

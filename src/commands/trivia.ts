@@ -6,10 +6,10 @@ import { bold } from '@discordjs/builders';
 import { stripIndents } from 'common-tags';
 import { Time } from '@sapphire/time-utilities';
 import { cast } from '@sapphire/utilities';
+import { numberEmojis } from '#utils/constants';
 
 export class TriviaCommand extends Command {
 	private readonly api = new OpenTDBService();
-	private static readonly emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣'];
 
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const category = interaction.options.getString('category') ?? undefined;
@@ -25,7 +25,7 @@ export class TriviaCommand extends Command {
 		const options = [...question.incorrect_answers];
 		options.splice(idx, 0, question.correct_answer);
 
-		const optionsDisplay = options.map((option, idx) => `${TriviaCommand.emojis[idx]} ${decodeURIComponent(option)}`).join('\n');
+		const optionsDisplay = options.map((option, idx) => `${numberEmojis[idx]} ${decodeURIComponent(option)}`).join('\n');
 
 		const [difficultyName] = Object.entries(QuestionDifficulty).find(([, value]) => value === question.difficulty)!;
 		const content = stripIndents`
@@ -38,11 +38,10 @@ export class TriviaCommand extends Command {
 			You have 15 seconds!
 		`;
 
-		console.log(content);
 		const buttons = options.map((_, optionIdx) =>
 			new MessageButton() //
 				.setCustomId(optionIdx.toString())
-				.setEmoji(TriviaCommand.emojis[optionIdx])
+				.setEmoji(numberEmojis[optionIdx])
 				.setStyle('PRIMARY')
 		);
 
@@ -99,7 +98,7 @@ export class TriviaCommand extends Command {
 	}
 
 	public override async registerApplicationCommands(registry: Command.Registry) {
-		const categories = await this.api.getCategories();
+		const categories = (await this.api.getCategories()) ?? [];
 		const videoGamesIdx = categories.findIndex((category) => category.name.includes('Video Games'));
 		const videoGamesCategory = categories[videoGamesIdx];
 
