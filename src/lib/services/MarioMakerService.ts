@@ -66,12 +66,12 @@ export const enum ObjectId {
 	FireFlower = 34,
 	SuperBall = 10_34,
 	SuperStar = 35,
-	Checkpoint = 90,
 	BigMushroomOrRaccoonOrPropellorOrCatOrCape = 44,
 	YoshiOrBoot,
 	Bowser = 62,
 	KoopaCar = 72,
 	FrogOrSMB2OrBalloonOrAcornOrBoomerang = 81,
+	Checkpoint = 90,
 	RedCoin = 92,
 	BowserJr = 98,
 	Hammer = 116,
@@ -82,7 +82,11 @@ export const enum ObjectId {
 	Iggy,
 	Roy,
 	Ludwig,
-	PropellerBox = 128
+	CannonBox,
+	PropellerBox,
+	GoombaMask,
+	BulletBillMask,
+	RedPOWBox
 }
 
 export const enum ThemeId {

@@ -114,15 +114,14 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			suggestedTags.push('Link');
 		}
 
-		const hasPropellorBox = level.objects.has(ObjectId.PropellerBox);
-		if (hasPropellorBox || level.objects.has(ObjectId.BigMushroomOrRaccoonOrPropellorOrCatOrCape)) {
+		if (level.objects.has(ObjectId.BigMushroomOrRaccoonOrPropellorOrCatOrCape)) {
 			if (level.style === 'SMB1') {
 				suggestedTags.push('Big Mushroom');
 			} else if (level.style === 'SMB3') {
 				suggestedTags.push('Raccoon');
 			} else if (level.style === 'SMW') {
 				suggestedTags.push('Cape');
-			} else if (level.style === 'NSMBU' || hasPropellorBox) {
+			} else if (level.style === 'NSMBU') {
 				suggestedTags.push('Propeller');
 			} else if (level.style === '3DW') {
 				suggestedTags.push('Cat');
@@ -155,6 +154,16 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			level.objects.has(ObjectId.Wendy)
 		) {
 			suggestedTags.push('Boss');
+		}
+
+		if (
+			level.objects.has(ObjectId.CannonBox) ||
+			level.objects.has(ObjectId.PropellerBox) ||
+			level.objects.has(ObjectId.GoombaMask) ||
+			level.objects.has(ObjectId.BulletBillMask) ||
+			level.objects.has(ObjectId.RedPOWBox)
+		) {
+			suggestedTags.push('Hats');
 		}
 
 		if (level.objects.has(ObjectId.Hammer)) {
