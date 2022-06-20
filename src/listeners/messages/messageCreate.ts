@@ -46,7 +46,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			);
 		}
 
-		if (level.title !== submitted.level_name) {
+		const title = level.title.toLowerCase().trim();
+		const description = level.description.toLowerCase().trim();
+
+		if (title !== submitted.level_name.toLowerCase().trim()) {
 			warnings.push(`Submitted level name (${submitted.level_name}) does not match actual level name (${level.title})`);
 		}
 
@@ -54,9 +57,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 		if (submitted && level.style !== submittedStyle) {
 			warnings.push(`Submitted level style (${submittedStyle}) does not match actual level style (${level.style})`);
 		}
-
-		const title = level.title.toLowerCase();
-		const description = level.description.toLowerCase();
 
 		if (!description.includes('#tj') && !title.includes('#tj') && !description.includes('#teamjamp') && !title.includes('#teamjamp')) {
 			warnings.push('Level does not have #TJ or #TeamJamp in the title or description');
@@ -174,10 +174,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 				Thank you for submitting your level! We have found some tags that may be helpful:
 				${codeBlock(suggestedTags.join('\n'))}
 				You may add them with the following command:
-				${quote(inlineCode(`!addtags ${submitted.code} ${suggestedTags.join(', ')}`))}
 			`;
 
-			await message.channel.send(content).catch(() => null);
+			await message.channel.send(content);
+			await message.channel.send(quote(inlineCode(`!addtags ${submitted.code} ${suggestedTags.join(', ')}`)));
 		}
 
 		if (warnings.length) {
