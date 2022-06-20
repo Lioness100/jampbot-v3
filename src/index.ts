@@ -3,15 +3,28 @@ import 'dotenv/config';
 
 import { SapphireClient, ApplicationCommandRegistries, RegisterBehavior, Piece, container } from '@sapphire/framework';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
-import { clientOptions } from '#root/config';
+import { clientOptions, env } from '#root/config';
 import { TwitterService } from '#services/TwitterService';
 import { MarioMakerService } from '#services/MarioMakerService';
 import cleanup from 'node-cleanup';
 import { MakerTeamsService } from '#services/MakerTeamsService';
+import scheduler from 'node-schedule';
 
-cleanup(() => {
+if (env.LOG_CHANNEL_ID) {
+	await import('#tasks/register');
+}
+
+const shutdown = async () => {
 	client.destroy();
 	container.twitter?.stream.destroy();
+	await scheduler.gracefulShutdown().catch(() => null);
+};
+
+cleanup(() => {
+	void shutdown();
+	cleanup.uninstall();
+
+	return false;
 });
 
 const client = new SapphireClient(clientOptions);

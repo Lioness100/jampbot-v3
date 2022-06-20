@@ -1,12 +1,19 @@
 import { fetch, FetchMethods, FetchMediaContentTypes } from '@sapphire/fetch';
 import { retryable } from '#utils/common';
 
+export interface Level {
+	code: string;
+	level_name: string;
+	maker_id: string;
+	tags: string;
+	videos?: string;
+}
 interface MemberResponse {
-	plays: { code: string; completed: 0 | 1; level_name: string }[];
+	plays: (Level & { completed: 0 | 1 })[];
 }
 
 interface LevelResponse {
-	levels: { code: string; level_name: string; maker_id: string; tags: string; videos?: string }[];
+	levels: Level[];
 }
 
 export class MakerTeamsService {

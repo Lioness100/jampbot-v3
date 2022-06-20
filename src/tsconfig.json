@@ -7,6 +7,7 @@
 		"noEmit": true,
 		"paths": {
 			"#root/*": ["*"],
+			"#tasks/*": ["tasks/*"],
 			"#types/*": ["lib/types/*"],
 			"#utils/*": ["lib/utils/*"],
 			"#structures/*": ["lib/structures/*"],

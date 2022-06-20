@@ -97,6 +97,11 @@ export class MarioMakerService {
 		return retryable(() => fetch<LevelInfoResponse>(url));
 	}
 
+	public getLevelInfoMultiple(codes: string[]) {
+		const url = new URL(`level_info_multiple/${codes}`, this.baseURL);
+		return retryable(() => fetch<{ courses: LevelInfoResponse[] }>(url));
+	}
+
 	public getMakerInfo(code: string) {
 		const url = new URL(`user_info/${code}`, this.baseURL);
 		return retryable(() => fetch<MakerInfoResponse>(url));
@@ -133,7 +138,7 @@ export class MarioMakerService {
 	}
 
 	public static formatCode(code: string) {
-		return code.match(/.{3}/g)!.join('-');
+		return code.match(/.{3}/g)!.join('-').toUpperCase();
 	}
 
 	public static resolveCode(code: string) {
