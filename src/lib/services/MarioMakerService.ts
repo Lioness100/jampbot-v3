@@ -62,6 +62,7 @@ export interface LevelInfoResponse {
 }
 
 export const enum ObjectId {
+	SuperMushroom = 20,
 	MasterSword = 10_20,
 	FireFlower = 34,
 	SuperBall = 10_34,

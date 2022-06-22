@@ -110,6 +110,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			}
 		}
 
+		if (level.objects.has(ObjectId.SuperMushroom)) {
+			suggestedTags.push('Super Mushroom');
+		}
+
 		if (level.objects.has(ObjectId.MasterSword)) {
 			suggestedTags.push('Link');
 		}
