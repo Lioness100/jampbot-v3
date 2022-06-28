@@ -6,7 +6,7 @@ import { blockQuote, bold, time, TimestampStyles } from '@discordjs/builders';
 import { Emoji } from '#utils/constants';
 import { countryCodeToFlag } from '#utils/common';
 
-export class MakerInfoCommand extends Command {
+export class MakerCommand extends Command {
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const codeInput = interaction.options.getString('code', true);
 		const code = MarioMakerService.resolveCode(codeInput);

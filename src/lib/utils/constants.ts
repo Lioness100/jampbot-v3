@@ -16,6 +16,7 @@ export const enum CustomId {
 	CodeForm = 'code-form',
 	ReplyInput = 'reply-input',
 	ReplyForm = 'reply-form',
+	LevelIdea = 'level-idea-button',
 	Like = 'like-button',
 	Dislike = 'dislike-button',
 	Retweet = 'retweet-button',

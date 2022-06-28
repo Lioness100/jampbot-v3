@@ -6,7 +6,7 @@ import { bold, inlineCode, time, TimestampStyles } from '@discordjs/builders';
 import { Emoji } from '#utils/constants';
 import { Constants, MessageActionRow, MessageButton } from 'discord.js';
 
-export class LevelInfoCommand extends Command {
+export class LevelCommand extends Command {
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const codeInput = interaction.options.getString('code', true);
 		const code = MarioMakerService.resolveCode(codeInput);

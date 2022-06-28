@@ -18,3 +18,11 @@ export const retryable = async <T>(fetchFn: () => Promise<T>, retries = 3, timeo
 		return retryable(fetchFn, retries - 1, timeout * 2);
 	});
 };
+
+export const sample = <T>(arr: readonly T[]): T => {
+	return arr[Math.floor(Math.random() * arr.length)];
+};
+
+export const range = (min: number, max: number) => {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
