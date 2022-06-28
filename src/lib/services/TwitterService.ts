@@ -62,9 +62,9 @@ export class TwitterService {
 			.setStyle(Constants.MessageButtonStyles.PRIMARY);
 
 		const blockButton = new MessageButton()
-			.setCustomId(CustomId.Block)
+			.setCustomId(CustomId.Mute)
 			.setEmoji('🤐')
-			.setLabel('Block')
+			.setLabel('Mute')
 			.setStyle(Constants.MessageButtonStyles.PRIMARY);
 
 		const row = new MessageActionRow().setComponents(likeButton, retweetButton, replyButton, blockButton);

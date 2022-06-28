@@ -22,8 +22,8 @@ export const enum CustomId {
 	Retweet = 'retweet-button',
 	UnRetweet = 'unretweet-button',
 	Reply = 'reply-button',
-	Block = 'block-button',
-	Unblock = 'unblock-button'
+	Mute = 'mute-button',
+	Unmute = 'unmute-button'
 }
 
 // You can replace the "name" portion of the emoji with "_" and it will always work.

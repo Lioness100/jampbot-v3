@@ -15,8 +15,8 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 		CustomId.Retweet,
 		CustomId.UnRetweet,
 		CustomId.Reply,
-		CustomId.Block,
-		CustomId.Unblock
+		CustomId.Mute,
+		CustomId.Unmute
 	];
 
 	public override async run(interaction: ButtonInteraction) {
@@ -83,15 +83,15 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 				break;
 			}
 
-			case CustomId.Block: {
-				await this.container.twitter.api.block(env.TWITTER_ACCOUNT_ID, author);
-				component.setCustomId(CustomId.Unblock).setEmoji('👋').setLabel('Unblock');
+			case CustomId.Mute: {
+				await this.container.twitter.api.mute(env.TWITTER_ACCOUNT_ID, author);
+				component.setCustomId(CustomId.Unmute).setEmoji('👋').setLabel('Unmute');
 				break;
 			}
 
-			case CustomId.Unblock: {
-				await this.container.twitter.api.unblock(env.TWITTER_ACCOUNT_ID, author);
-				component.setCustomId(CustomId.Block).setEmoji('🤐').setLabel('Block');
+			case CustomId.Unmute: {
+				await this.container.twitter.api.unmute(env.TWITTER_ACCOUNT_ID, author);
+				component.setCustomId(CustomId.Mute).setEmoji('🤐').setLabel('Mute');
 				break;
 			}
 		}
