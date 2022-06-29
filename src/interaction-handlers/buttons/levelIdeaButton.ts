@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import type { ButtonInteraction } from 'discord.js';
-import { CustomId } from '#utils/constants';
+import { CustomId, parseCustomId } from '#utils/interactions';
 import { createEmbed } from '#utils/responses';
 import { LevelIdeaCommand } from '#root/commands/level-idea';
 
@@ -13,7 +13,7 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 	}
 
 	public override parse(interaction: ButtonInteraction) {
-		const [id, style] = interaction.customId.split('.');
+		const [id, style] = parseCustomId(interaction.customId);
 		return id === CustomId.LevelIdea ? this.some(Number(style)) : this.none();
 	}
 }

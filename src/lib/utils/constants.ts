@@ -11,21 +11,6 @@ export enum EmbedColor {
 	Error = Constants.Colors.RED
 }
 
-export const enum CustomId {
-	CodeInput = 'code-input',
-	CodeForm = 'code-form',
-	ReplyInput = 'reply-input',
-	ReplyForm = 'reply-form',
-	LevelIdea = 'level-idea-button',
-	Like = 'like-button',
-	Dislike = 'dislike-button',
-	Retweet = 'retweet-button',
-	UnRetweet = 'unretweet-button',
-	Reply = 'reply-button',
-	Mute = 'mute-button',
-	Unmute = 'unmute-button'
-}
-
 // You can replace the "name" portion of the emoji with "_" and it will always work.
 export const enum Emoji {
 	PridePog = '<:_:796585159607975947>',

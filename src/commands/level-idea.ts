@@ -3,7 +3,8 @@ import { Command } from '#structures/Command';
 import { commaListsAnd } from 'common-tags';
 import { createEmbed } from '#utils/responses';
 import { MessageButton, Constants, MessageActionRow } from 'discord.js';
-import { CustomId, Emoji } from '#utils/constants';
+import { Emoji } from '#utils/constants';
+import { CustomId, createCustomId } from '#utils/interactions';
 
 export class LevelIdeaCommand extends Command {
 	public override chatInputRun(interaction: Command.Interaction) {
@@ -11,7 +12,7 @@ export class LevelIdeaCommand extends Command {
 		const embed = createEmbed(LevelIdeaCommand.generateIdea(style));
 
 		const button = new MessageButton()
-			.setCustomId(`${CustomId.LevelIdea}.${style}`)
+			.setCustomId(createCustomId(CustomId.LevelIdea, style))
 			.setEmoji('🔁')
 			.setLabel('Generate another idea')
 			.setStyle(Constants.MessageButtonStyles.PRIMARY);

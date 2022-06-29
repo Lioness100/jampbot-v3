@@ -10,3 +10,28 @@
 export const resolveAPIStructure = <T extends Function>(obj: T extends new (obj: infer P) => unknown ? P : unknown, Structure: T): T['prototype'] => {
 	return obj instanceof Structure ? obj : Reflect.construct(Structure, [obj]);
 };
+
+export const enum CustomId {
+	CodeInput = 'code-input',
+	CodeForm = 'code-form',
+	ReplyInput = 'reply-input',
+	ReplyForm = 'reply-form',
+	LevelIdea = 'level-idea-button',
+	Like = 'like-button',
+	Dislike = 'dislike-button',
+	Retweet = 'retweet-button',
+	UnRetweet = 'unretweet-button',
+	Reply = 'reply-button',
+	Mute = 'mute-button',
+	Unmute = 'unmute-button'
+}
+
+export type CustomIdParams = [name: CustomId.LevelIdea, style?: number];
+
+export const createCustomId = <T extends CustomIdParams>(name: T[0], ...args: T extends [CustomId, ...infer A] ? A : never) => {
+	return `${name}.${args.join('.')}`;
+};
+
+export const parseCustomId = (id: string) => {
+	return id.split('.') as [CustomIdParams[0], ...string[]];
+};

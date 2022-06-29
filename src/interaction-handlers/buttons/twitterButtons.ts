@@ -1,15 +1,14 @@
-import { resolveAPIStructure } from '#utils/interactions';
+import { resolveAPIStructure, CustomId } from '#utils/interactions';
 import { TwitterService } from '#services/TwitterService';
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import { type ButtonInteraction, Message, type MessageButton, Constants, Modal, MessageActionRow, TextInputComponent } from 'discord.js';
-import { CustomId } from '#utils/constants';
 import { env } from '#root/config';
 import { createEmbed } from '#utils/responses';
 
 @ApplyOptions<InteractionHandler.Options>({ interactionHandlerType: InteractionHandlerTypes.Button, enabled: TwitterService.canRun() })
 export class TwitterButtonInteractionHandler extends InteractionHandler {
-	private static readonly validIds = [
+	private static readonly validIds: string[] = [
 		CustomId.Like,
 		CustomId.Dislike,
 		CustomId.Retweet,
@@ -105,8 +104,6 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 	}
 
 	public override parse(interaction: ButtonInteraction) {
-		return TwitterButtonInteractionHandler.validIds.includes(interaction.customId as typeof TwitterButtonInteractionHandler['validIds'][number])
-			? this.some()
-			: this.none();
+		return TwitterButtonInteractionHandler.validIds.includes(interaction.customId) ? this.some() : this.none();
 	}
 }
