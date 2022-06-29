@@ -62,6 +62,7 @@ export interface LevelInfoResponse {
 }
 
 export const enum ObjectId {
+	Pipe = 9,
 	SuperMushroom = 20,
 	MasterSword = 10_20,
 	FireFlower = 34,
@@ -205,15 +206,20 @@ export class MarioMakerService {
 				.subarray(0x136, 0x136 + 150)
 				.toString('utf16le')
 				.split('\0')[0],
-			themes: [overworld.readUInt8(), subworld.readUInt8()],
-			autoscroll: Boolean(overworld.readUInt8(0x1) || subworld.readUInt8(0x1)),
-			isNight: overworld.readUInt32LE(0x18) === 2 || subworld.readUInt32LE(0x18) === 2,
+			themes: [overworld.readUInt8()],
+			autoscroll: Boolean(overworld.readUInt8(0x1)),
+			isNight: overworld.readUInt32LE(0x18) === 2,
+			subworldObjects: new Map<ObjectId, number>(),
 			objects: new Map<ObjectId, number>()
 		};
 
-		for (const body of [overworld, subworld]) {
+		for (const { type, body } of [
+			{ type: 'overworld', body: overworld },
+			{ type: 'subworld', body: subworld }
+		] as const) {
 			const objectCount = body.readUInt32LE(0x1c);
 			const objects = body.subarray(0x48, 0x48 + objectCount * 0x20);
+			const map = type === 'overworld' ? course.objects : course.subworldObjects;
 
 			const altItemFlag = 0x00000004 as const;
 
@@ -224,8 +230,18 @@ export class MarioMakerService {
 				const isAlt = objectData.readUInt32LE(0xc) & altItemFlag;
 				const fullId = id + (isAlt ? 1000 : 0);
 
-				const count = course.objects.get(fullId) ?? 0;
-				course.objects.set(fullId, count + 1);
+				const count = map.get(fullId) ?? 0;
+				map.set(fullId, count + 1);
+			}
+		}
+
+		if (course.subworldObjects.has(ObjectId.Pipe)) {
+			course.themes.push(subworld.readUInt8());
+			course.autoscroll ||= Boolean(subworld.readUInt8(0x1));
+			course.isNight ||= subworld.readUInt32LE(0x18) === 2;
+
+			for (const [id, count] of course.subworldObjects) {
+				course.objects.set(id, (course.objects.get(id) ?? 0) + count);
 			}
 		}
 
