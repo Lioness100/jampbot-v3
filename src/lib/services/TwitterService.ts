@@ -38,6 +38,13 @@ export class TwitterService {
 	}
 
 	public async handleTweetData({ data: tweet }: TweetV2SingleStreamResult) {
+		const muted = await this.api.userMutingUsers(env.TWITTER_ACCOUNT_ID);
+		await muted.fetchLast();
+
+		if (muted.data.data.some(({ id }) => id === tweet.author_id)) {
+			return;
+		}
+
 		const channel = container.client.channels.cache.get(env.TWITTER_NOTIFICATION_CHANNEL_ID);
 		if (!channel?.isText()) {
 			return this.stream.destroy();
