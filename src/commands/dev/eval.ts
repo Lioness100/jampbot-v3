@@ -1,7 +1,8 @@
-import { Message, Constants, MessageActionRow, MessageButton, Modal, TextInputComponent, type ButtonInteraction } from 'discord.js';
+import { Constants, MessageActionRow, MessageButton, Modal, TextInputComponent, type ButtonInteraction, FileOptions } from 'discord.js';
 import { EmbedLimits } from '@sapphire/discord.js-utilities';
-import { createEmbed, sendError } from '#utils/responses';
-import { CustomId, EmbedColor } from '#utils/constants';
+import { createEmbed } from '#utils/responses';
+import { EmbedColor } from '#utils/constants';
+import { createCustomId, CustomId } from '#utils/customIds';
 import { isThenable } from '@sapphire/utilities';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { codeBlock } from '@discordjs/builders';
@@ -10,9 +11,9 @@ import { inspect } from 'node:util';
 import { Buffer } from 'node:buffer';
 import { Type } from '@sapphire/type';
 import { env } from '#root/config';
-import { setTimeout, clearTimeout } from 'node:timers';
-import { Time } from '@sapphire/time-utilities';
+import { ApplyOptions } from '@sapphire/decorators';
 
+@ApplyOptions<Command.Options>({ preconditions: ['OwnerOnly'] })
 export class EvalCommand extends Command {
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const async = interaction.options.getBoolean('async');
@@ -53,59 +54,50 @@ export class EvalCommand extends Command {
 			return;
 		}
 
-		const message = (await submission.deferReply({ ephemeral: parameters.ephemeral ?? false, fetchReply: true })) as Message;
+		await submission.deferReply({ ephemeral: parameters.ephemeral ?? false });
 		const code = submission.fields.getTextInputValue(CustomId.CodeInput);
 
 		const { result, success, type, elapsed } = await this.eval(interaction, code, parameters);
 		const output = success ? codeBlock('js', result) : codeBlock('bash', result);
 
-		const embedLimitReached = output.length > EmbedLimits.MaximumDescriptionLength;
-		const embed = createEmbed(
-			embedLimitReached ? 'Output was too long! The result has been sent as a file.' : output,
-			success ? EmbedColor.Primary : EmbedColor.Error
-		);
+		const embed = createEmbed('', success ? EmbedColor.Primary : EmbedColor.Error);
+
+		const inputLimitReached = code.length > EmbedLimits.MaximumFieldValueLength;
+		const outputLimitReached = output.length > EmbedLimits.MaximumFieldValueLength;
+		const tooLongMessage = `was too long! The result has been sent as a file.` as const;
 
 		embed
 			.setTitle(success ? 'Eval Result ✨' : 'Eval Error 💀')
+			.addField('Input 🤖', inputLimitReached ? `Input ${tooLongMessage}` : codeBlock('js', code))
+			.addField('Output 📥', outputLimitReached ? `Output ${tooLongMessage}` : output)
 			.addField('Type 📝', codeBlock('ts', type), true)
 			.addField('Elapsed ⏱', elapsed, true);
 
-		const files = embedLimitReached ? [{ attachment: Buffer.from(output), name: 'output.txt' }] : [];
+		const files: FileOptions[] = [];
+
+		if (inputLimitReached) {
+			files.push({ attachment: Buffer.from(code), name: 'input.txt' });
+		}
+
+		if (outputLimitReached) {
+			files.push({ attachment: Buffer.from(output), name: 'output.txt' });
+		}
+
+		const customId = createCustomId(
+			CustomId.ReviseCode,
+			parameters.async ?? undefined,
+			parameters.ephemeral ?? undefined,
+			parameters.depth ?? undefined
+		);
 
 		const reviseButton = new MessageButton()
-			.setCustomId('revise-code')
+			.setCustomId(customId)
 			.setEmoji('🔁')
 			.setLabel('Revise')
 			.setStyle(Constants.MessageButtonStyles.PRIMARY);
 
 		const buttonRow = new MessageActionRow().setComponents(reviseButton);
 		await submission.editReply({ embeds: [embed], components: [buttonRow], files });
-
-		const timeout = setTimeout(() => {
-			void message.edit({ components: [] }).catch(() => null);
-		}, Time.Minute * 5);
-
-		const buttonInteraction = await message
-			.awaitMessageComponent({
-				componentType: Constants.MessageComponentTypes.BUTTON,
-				time: Time.Minute * 5,
-				filter: async (buttonInteraction) => {
-					if (buttonInteraction.user.id !== interaction.user.id) {
-						await sendError(interaction, `This button is only for ${interaction.user}`);
-						return false;
-					}
-
-					return true;
-				}
-			})
-			.catch(() => null);
-
-		if (!buttonInteraction) {
-			return;
-		}
-
-		clearTimeout(timeout);
-		await this.sendForm(buttonInteraction, { ...parameters, code });
 	}
 
 	private async eval(

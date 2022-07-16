@@ -2,7 +2,7 @@ import { ETwitterStreamEvent, type TweetV2SingleStreamResult, TwitterApi, type T
 import { env } from '#root/config';
 import { container } from '@sapphire/framework';
 import { Constants, MessageActionRow, MessageButton } from 'discord.js';
-import { CustomId } from '#utils/interactions';
+import { CustomId } from '#utils/customIds';
 import { stripIndents } from 'common-tags';
 
 export class TwitterService {

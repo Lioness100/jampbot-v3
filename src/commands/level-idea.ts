@@ -4,7 +4,7 @@ import { commaListsAnd } from 'common-tags';
 import { createEmbed } from '#utils/responses';
 import { MessageButton, Constants, MessageActionRow } from 'discord.js';
 import { Emoji } from '#utils/constants';
-import { CustomId, createCustomId } from '#utils/interactions';
+import { CustomId, createCustomId } from '#utils/customIds';
 
 export class LevelIdeaCommand extends Command {
 	public override chatInputRun(interaction: Command.Interaction) {

@@ -8,7 +8,9 @@ import { Stopwatch } from '@sapphire/stopwatch';
 import { Command } from '#structures/Command';
 import { env } from '#root/config';
 import Fuse from 'fuse.js/dist/fuse.basic.min.js';
+import { ApplyOptions } from '@sapphire/decorators';
 
+@ApplyOptions<Command.Options>({ preconditions: ['OwnerOnly'] })
 export class ReloadCommand extends Command {
 	public override async chatInputRun(interaction: Command.Interaction) {
 		const type = interaction.options.getSubcommand(true);

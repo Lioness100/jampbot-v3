@@ -26,3 +26,7 @@ export const sample = <T>(arr: readonly T[]): T => {
 export const range = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+export const createBuilder = <T>() => {
+	return <T2 extends T>(param: T2) => param;
+};

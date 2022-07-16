@@ -1,14 +1,14 @@
-import { resolveAPIStructure, CustomId } from '#utils/interactions';
+import { CustomId, parseCustomId } from '#utils/customIds';
 import { TwitterService } from '#services/TwitterService';
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
-import { type ButtonInteraction, Message, type MessageButton, Constants, Modal, MessageActionRow, TextInputComponent } from 'discord.js';
+import { type ButtonInteraction, type Message, type MessageButton, Constants, Modal, MessageActionRow, TextInputComponent } from 'discord.js';
 import { env } from '#root/config';
 import { createEmbed } from '#utils/responses';
 
 @ApplyOptions<InteractionHandler.Options>({ interactionHandlerType: InteractionHandlerTypes.Button, enabled: TwitterService.canRun() })
 export class TwitterButtonInteractionHandler extends InteractionHandler {
-	private static readonly validIds: string[] = [
+	private static readonly validIds: CustomId[] = [
 		CustomId.Like,
 		CustomId.Dislike,
 		CustomId.Retweet,
@@ -20,7 +20,7 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 
 	public override async run(interaction: ButtonInteraction) {
 		const tweetRegex = /\/(?<author>\d+)\/status\/(?<id>\d+)/;
-		const message = resolveAPIStructure(interaction.message, Message);
+		const message = interaction.message as Message;
 		const match = tweetRegex.exec(message.content);
 
 		if (!match?.groups) {
@@ -104,6 +104,6 @@ export class TwitterButtonInteractionHandler extends InteractionHandler {
 	}
 
 	public override parse(interaction: ButtonInteraction) {
-		return TwitterButtonInteractionHandler.validIds.includes(interaction.customId) ? this.some() : this.none();
+		return parseCustomId(interaction.customId, TwitterButtonInteractionHandler.validIds);
 	}
 }
