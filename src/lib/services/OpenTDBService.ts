@@ -9,10 +9,6 @@ export enum QuestionDifficulty {
 	Hard = 'hard'
 }
 
-export const enum TriviaLimits {
-	MaximumAmountOfQuestions = 50
-}
-
 export const enum TriviaResponseCode {
 	TokenNotFound = 3,
 	TokenEmpty
@@ -45,6 +41,7 @@ export class OpenTDBService {
 	private readonly tokenURL = new URL('/api_token.php', this.baseURL);
 	private readonly apiURL = new URL('/api.php', this.baseURL);
 
+	private categories?: APIApplicationCommandOptionChoice<string>[];
 	private token?: string;
 
 	public constructor() {
@@ -64,6 +61,10 @@ export class OpenTDBService {
 
 		if (options.category) {
 			this.apiURL.searchParams.set('category', options.category);
+		} else {
+			const categories = await this.getCategories();
+			const category = categories[Math.floor(Math.random() * categories.length)];
+			this.apiURL.searchParams.set('category', category.value);
 		}
 
 		const res = await retryable(() => fetch<TriviaResult>(this.apiURL));
@@ -76,8 +77,13 @@ export class OpenTDBService {
 	}
 
 	public async getCategories() {
+		if (this.categories) {
+			return this.categories;
+		}
+
 		const res = await retryable(() => fetch<CategoriesResult>(this.categoryURL));
-		return res.trivia_categories.map<APIApplicationCommandOptionChoice<string>>(({ id, name }) => ({ name, value: id.toString() }));
+		this.categories = res.trivia_categories.map(({ id, name }) => ({ name, value: id.toString() }));
+		return this.categories;
 	}
 
 	private async startNewSession() {
