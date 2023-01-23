@@ -23,7 +23,8 @@ export const env = cleanEnv(process.env, {
 	INFORMATION_CHANNEL_ID: optionalStringPredicate,
 	WOLFRAM_APP_ID: optionalStringPredicate,
 	SHELLBOT_USER_ID: optionalStringPredicate,
-	LOG_CHANNEL_ID: optionalStringPredicate
+	LOG_CHANNEL_ID: optionalStringPredicate,
+	SUBMISSION_LOCKED_ROLE_ID: optionalStringPredicate
 });
 
 const necessaryManagers: ReadonlySet<string> = new Set([

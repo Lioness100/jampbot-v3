@@ -2,17 +2,16 @@ import { env } from '#root/config';
 import { Emoji, rootURL } from '#utils/constants';
 import { bold, channelMention } from '@discordjs/builders';
 import { createCanvas, GlobalFonts, Image } from '@napi-rs/canvas';
-import { ApplyOptions } from '@sapphire/decorators';
 import { Listener, Events } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath, URL } from 'node:url';
 import { stripIndents } from 'common-tags';
+import { submissionLocks } from '#root/database';
 
 const banner = new Image();
 banner.src = await readFile(new URL('../assets/images/welcome-banner.png', rootURL));
 
-@ApplyOptions({ enabled: Boolean(env.WELCOME_CHANNEL_ID) })
 export class GuildMemberAddListener extends Listener<typeof Events.GuildMemberAdd> {
 	public override onLoad() {
 		const url = new URL('../assets/fonts/Mario Maker.ttf', rootURL);
@@ -22,6 +21,29 @@ export class GuildMemberAddListener extends Listener<typeof Events.GuildMemberAd
 	}
 
 	public async run(member: GuildMember) {
+		await Promise.allSettled([this.handleSubmissionLockedStatus(member), this.sendWelcomeMessage(member)]);
+	}
+
+	private async handleSubmissionLockedStatus(member: GuildMember) {
+		if (!env.SUBMISSION_LOCKED_ROLE_ID || !submissionLocks.data.includes(member.id)) {
+			return;
+		}
+
+		const submissionLockedRole = member.guild.roles.cache.get(env.SUBMISSION_LOCKED_ROLE_ID);
+		if (!submissionLockedRole) {
+			return;
+		}
+
+		await member.roles.add(submissionLockedRole);
+		submissionLocks.data.splice(submissionLocks.data.indexOf(member.id), 1);
+		await submissionLocks.write();
+	}
+
+	private async sendWelcomeMessage(member: GuildMember) {
+		if (!env.WELCOME_CHANNEL_ID) {
+			return;
+		}
+
 		const canvas = createCanvas(700, 250);
 		const ctx = canvas.getContext('2d');
 

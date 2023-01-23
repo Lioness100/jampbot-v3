@@ -3380,6 +3380,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unicorn: ^42.0.0
     fuse.js: ^6.6.2
+    lowdb: ^3.0.0
     node-cleanup: ^2.1.2
     node-schedule: ^2.1.0
     pm2: ^5.2.0
@@ -3588,6 +3589,15 @@ __metadata:
   version: 0.1.1
   resolution: "long-timeout@npm:0.1.1"
   checksum: 48668e5362cb74c4b77a6b833d59f149b9bb9e99c5a5097609807e2597cd0920613b2a42b89bd0870848298be3691064d95599a04ae010023d07dba39932afa7
+  languageName: node
+  linkType: hard
+
+"lowdb@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "lowdb@npm:3.0.0"
+  dependencies:
+    steno: ^2.1.0
+  checksum: 49b18e55ccd9968ce3928a192cf0c9d0a3e4e5f3b1fb3e189ad39263374b485994feb38c96433b6360a7653dc935703194a86b0fa83d98728d81629293f34ac0
   languageName: node
   linkType: hard
 
@@ -5012,6 +5022,13 @@ __metadata:
   version: 1.5.0
   resolution: "statuses@npm:1.5.0"
   checksum: c469b9519de16a4bb19600205cffb39ee471a5f17b82589757ca7bd40a8d92ebb6ed9f98b5a540c5d302ccbc78f15dc03cc0280dd6e00df1335568a5d5758a5c
+  languageName: node
+  linkType: hard
+
+"steno@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "steno@npm:2.1.0"
+  checksum: 76a0ed9f0a069fd9a86f919fe73e31147eeb3534ec6f6a7445f2a3949a5b2ede71e9892f1ba906fd2e1fccabc587f2854f5dd527398a187762c95903739251fb
   languageName: node
   linkType: hard
 
