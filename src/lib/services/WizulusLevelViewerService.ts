@@ -6,7 +6,8 @@ export class WizulusLevelViewerService extends null {
 
 	public static async getLevelPreviews(code: string) {
 		const url = new URL(code, this.baseURL);
-		const browser = await chromium.launch({ headless: false });
+		console.log(url.toString());
+		const browser = await chromium.launch();
 		const page = await browser.newPage();
 
 		await page.goto(url.toString(), { waitUntil: 'networkidle' });
