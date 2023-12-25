@@ -8,6 +8,7 @@ import { type Events, Listener } from '@sapphire/framework';
 import type { Message, TextChannel } from 'discord.js';
 import { codeBlock, inlineCode, quote } from '@discordjs/builders';
 import { stripIndents } from 'common-tags';
+import { WizulusLevelViewerService } from '#root/lib/services/WizulusLevelViewerService';
 
 @ApplyOptions({ enabled: MessageCreateListener.canRun() })
 export class MessageCreateListener extends Listener<typeof Events.MessageCreate> {
@@ -203,6 +204,13 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
 				await pendingChannel.send({ embeds: [embed] }).catch(() => null);
 			}
+		}
+
+		const [overworld, subworld] = await WizulusLevelViewerService.getLevelPreviews(code).catch(() => []);
+
+		if (overworld && subworld) {
+			const pendingChannel = message.guild!.channels.cache.find(({ name }) => name.includes(code.toLowerCase())) as TextChannel;
+			await pendingChannel?.send({ files: [overworld, subworld] }).catch(() => null);
 		}
 
 		return true;
