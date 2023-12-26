@@ -206,7 +206,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 			}
 		}
 
-		const [overworld, subworld] = await WizulusLevelViewerService.getLevelPreviews(code).catch(() => []);
+		const [overworld, subworld] = await WizulusLevelViewerService.getLevelPreviews(code).catch((error) => {
+			console.log(error);
+			return [];
+		});
 
 		if (overworld && subworld) {
 			const pendingChannel = message.guild!.channels.cache.find(({ name }) => name.includes(code.toLowerCase())) as TextChannel;
