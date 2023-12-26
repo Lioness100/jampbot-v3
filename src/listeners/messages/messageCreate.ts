@@ -210,7 +210,8 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
 		if (overworld && subworld) {
 			const pendingChannel = message.guild!.channels.cache.find(({ name }) => name.includes(code.toLowerCase())) as TextChannel;
-			await pendingChannel?.send({ files: [overworld, subworld] }).catch(() => null);
+			await pendingChannel?.send({ files: [overworld] }).catch(() => null);
+			await pendingChannel?.send({ files: [subworld] }).catch(() => null);
 		}
 
 		return true;

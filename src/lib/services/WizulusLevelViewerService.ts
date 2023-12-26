@@ -1,12 +1,13 @@
 import { chromium } from 'playwright';
 import { MessageAttachment } from 'discord.js';
+import { Buffer } from 'node:buffer';
 
 export class WizulusLevelViewerService extends null {
 	public static readonly baseURL = new URL('https://smm2.wizul.us/smm2/level/');
 
 	public static async getLevelPreviews(code: string) {
 		const url = new URL(code, this.baseURL);
-		console.log(url.toString());
+
 		const browser = await chromium.launch();
 		const page = await browser.newPage();
 
@@ -15,19 +16,19 @@ export class WizulusLevelViewerService extends null {
 		await page.waitForSelector('button > span:nth-child(2) > span:nth-child(2)');
 		const [, overworld, subworld] = await page.$$('button > span:nth-child(2) > span:nth-child(2)');
 
-		const overWorldDownloadPromise = page.waitForEvent('download');
+		const overworldDownloadPromise = page.waitForEvent('download');
 		await overworld.click();
-		const overWorldDownload = await overWorldDownloadPromise;
+		const overworldDownload = await overworldDownloadPromise;
 
-		const subWorldDownloadPromise = page.waitForEvent('download');
+		const subworldDownloadPromise = page.waitForEvent('download');
 		await subworld.click();
-		const subWorldDownload = await subWorldDownloadPromise;
+		const subworldDownload = await subworldDownloadPromise;
 
 		await browser.close();
 
 		return [
-			new MessageAttachment(overWorldDownload.url(), overWorldDownload.suggestedFilename()),
-			new MessageAttachment(subWorldDownload.url(), subWorldDownload.suggestedFilename())
+			new MessageAttachment(Buffer.from(overworldDownload.url().split(',')[1], 'base64'), overworldDownload.suggestedFilename()),
+			new MessageAttachment(Buffer.from(subworldDownload.url().split(',')[1], 'base64'), subworldDownload.suggestedFilename())
 		];
 	}
 }

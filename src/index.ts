@@ -16,7 +16,7 @@ if (env.LOG_CHANNEL_ID) {
 
 const shutdown = async () => {
 	client.destroy();
-	container.twitter?.stream.destroy();
+	container.twitter?.stream?.destroy();
 	await scheduler.gracefulShutdown().catch(() => null);
 };
 
